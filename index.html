@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=375, initial-scale=1.0">
+    <title>Visit Museums</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Screen 0: Login -->
+        <div class="screen active" id="screen-login">
+            <div class="login-container">
+                <h1 class="login-title">Visit Museums</h1>
+                <p class="login-subtitle">Discover amazing exhibitions</p>
+                
+                <form class="login-form">
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    
+                    <button type="button" class="cta-button" onclick="login()">Sign In</button>
+                    
+                    <div class="login-links">
+                        <a href="#" onclick="showScreen('screen-register'); return false;">Create Account</a>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                </form>
+                
+                <div class="social-login">
+                    <p>Or continue with</p>
+                    <div class="social-buttons">
+                        <button class="social-btn">Google</button>
+                        <button class="social-btn">Apple</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 0.5: Register -->
+        <div class="screen" id="screen-register">
+            <div class="login-container">
+                <h1 class="login-title">Create Account</h1>
+                <p class="login-subtitle">Join Visit Museums today</p>
+                
+                <form class="login-form">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <input type="password" placeholder="Confirm Password" required>
+                    
+                    <label class="checkbox-container">
+                        <input type="checkbox" required>
+                        <span>I agree to the Terms of Service and Privacy Policy</span>
+                    </label>
+                    
+                    <button type="button" class="cta-button" onclick="register()">Create Account</button>
+                    
+                    <div class="login-links">
+                        <a href="#" onclick="showScreen('screen-login'); return false;">Already have an account? Sign In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Screen 1: Home -->
+        <div class="screen" id="screen-home">
+            <header class="app-header">
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <input type="text" class="search-bar" placeholder="Search exhibitions...">
+                
+                <section class="popular-section">
+                    <h2>Popular exhibitions</h2>
+                    <div class="exhibition-grid">
+                        <div class="exhibition-card" onclick="showScreen('screen-detail')">
+                            <div class="card-image"></div>
+                            <h3>Modern Art</h3>
+                            <p>Tokyo Museum</p>
+                            <p>Jan 1 - Mar 31</p>
+                        </div>
+                        <div class="exhibition-card" onclick="showScreen('screen-detail')">
+                            <div class="card-image"></div>
+                            <h3>Ancient History</h3>
+                            <p>National Museum</p>
+                            <p>Feb 15 - May 20</p>
+                        </div>
+                        <div class="exhibition-card" onclick="showScreen('screen-detail')">
+                            <div class="card-image"></div>
+                            <h3>Photography</h3>
+                            <p>Art Gallery</p>
+                            <p>Mar 10 - Jun 30</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="search-filters">
+                    <div class="search-row">
+                        <input type="text" class="search-bar" placeholder="Search...">
+                        <button class="more-filters-btn" onclick="toggleMoreFilters()">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M8 12L12 8L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 5H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M6 9H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M10 13H10.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn tag-btn" onclick="toggleTag('open now')">open now</button>
+                        <button class="filter-btn tag-btn" onclick="toggleTag('contemporary')">contemporary</button>
+                        <button class="filter-btn tag-btn" onclick="toggleTag('abstract')">abstract</button>
+                        <button class="filter-btn tag-btn" onclick="toggleTag('music')">music</button>
+                    </div>
+                </div>
+                
+                <!-- More Filters Panel -->
+                <div class="more-filters-panel" id="more-filters-panel">
+                    <div class="filter-panel-content">
+                        <div class="filter-panel-header">
+                            <h3>More Filters</h3>
+                            <button class="close-filters-btn" onclick="toggleMoreFilters()">×</button>
+                        </div>
+                        <div class="filter-categories">
+                            <div class="filter-category">
+                                <h4>Type</h4>
+                                <div class="filter-options">
+                                    <button class="filter-option tag-btn" onclick="toggleTag('interactive')">interactive</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('digital')">digital</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('outdoor')">outdoor</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('traditional')">traditional</button>
+                                </div>
+                            </div>
+                            <div class="filter-category">
+                                <h4>Subject</h4>
+                                <div class="filter-options">
+                                    <button class="filter-option tag-btn" onclick="toggleTag('history')">history</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('photography')">photography</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('technology')">technology</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('classical')">classical</button>
+                                </div>
+                            </div>
+                            <div class="filter-category">
+                                <h4>Style</h4>
+                                <div class="filter-options">
+                                    <button class="filter-option tag-btn" onclick="toggleTag('impressionism')">impressionism</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('sculpture')">sculpture</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('painting')">painting</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('crafts')">crafts</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="clear-filters-btn" onclick="clearAllFilters()">Clear All</button>
+                            <button class="apply-filters-btn" onclick="toggleMoreFilters()">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <section class="filtered-results-section">
+                    <h2 id="filtered-results-title">All exhibitions</h2>
+                    <div class="exhibition-grid"></div>
+                </section>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 2: Exhibition Detail -->
+        <div class="screen" id="screen-detail">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="hero-image"></div>
+                
+                <div class="tabs">
+                    <button class="tab active">open now</button>
+                    <button class="tab">abstract</button>
+                    <button class="tab">video</button>
+                </div>
+                
+                <div class="exhibition-details">
+                    <h2>Modern Art Exhibition</h2>
+                    <p>Tokyo Museum</p>
+                    <p>Jan 1 - Mar 31, 2025</p>
+                    
+                    <div class="outline-section">
+                        <h3>Outline text</h3>
+                        <div class="placeholder-text">
+                            <div class="text-line"></div>
+                            <div class="text-line"></div>
+                            <div class="text-line"></div>
+                            <div class="text-line"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="cta-button" onclick="showScreen('screen-date')">Book a ticket</button>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 3: Date Selection -->
+        <div class="screen" id="screen-date">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="booking-card">
+                    <div class="card-image"></div>
+                    <div class="card-info">
+                        <h3>Modern Art Exhibition</h3>
+                        <p>Tokyo Museum</p>
+                        <p>Jan 1 - Mar 31, 2025</p>
+                    </div>
+                </div>
+                
+                <div class="calendar-section">
+                    <h2>2025, 7</h2>
+                    <div class="calendar">
+                        <div class="weekdays">
+                            <span>M</span>
+                            <span>T</span>
+                            <span>W</span>
+                            <span>T</span>
+                            <span>F</span>
+                            <span>S</span>
+                            <span>S</span>
+                        </div>
+                        <div class="dates">
+                            <span class="crowd-busy">1</span>
+                            <span class="crowd-average">2</span>
+                            <span class="crowd-light">3</span>
+                            <span class="crowd-busy">4</span>
+                            <span class="crowd-average">5</span>
+                            <span class="crowd-light">6</span>
+                            <span class="crowd-busy">7</span>
+                            <span class="crowd-average">8</span>
+                            <span class="crowd-light">9</span>
+                            <span class="selected crowd-average">10</span>
+                            <span class="crowd-busy">11</span>
+                            <span class="crowd-light">12</span>
+                            <span class="crowd-average">13</span>
+                            <span class="crowd-busy">14</span>
+                            <span class="crowd-light">15</span>
+                            <span class="crowd-average">16</span>
+                            <span class="crowd-busy">17</span>
+                            <span class="crowd-light">18</span>
+                            <span class="crowd-average">19</span>
+                            <span class="crowd-busy">20</span>
+                            <span class="crowd-light">21</span>
+                            <span class="crowd-average">22</span>
+                            <span class="crowd-busy">23</span>
+                            <span class="crowd-light">24</span>
+                            <span class="crowd-average">25</span>
+                            <span class="crowd-busy">26</span>
+                            <span class="crowd-light">27</span>
+                            <span class="crowd-average">28</span>
+                            <span class="crowd-busy">29</span>
+                            <span class="crowd-light">30</span>
+                            <span class="crowd-average">31</span>
+                        </div>
+                    </div>
+                    
+                    <div class="crowd-indicators">
+                        <span class="indicator busy">busy</span>
+                        <span class="indicator average">average</span>
+                        <span class="indicator light">light</span>
+                    </div>
+                </div>
+                
+                <button class="cta-button" onclick="showScreen('screen-time')">continue</button>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 4: Time Selection -->
+        <div class="screen" id="screen-time">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="booking-card">
+                    <div class="card-image"></div>
+                    <div class="card-info">
+                        <h3>Modern Art Exhibition</h3>
+                        <p>Tokyo Museum</p>
+                        <p>Jan 1 - Mar 31, 2025</p>
+                    </div>
+                </div>
+                
+                <div class="time-slots">
+                    <h2>Select Time</h2>
+                    <div class="time-slot" onclick="selectTime(this)">10:00</div>
+                    <div class="time-slot" onclick="selectTime(this)">10:30</div>
+                    <div class="time-slot" onclick="selectTime(this)">11:00</div>
+                    <div class="time-slot sold-out">11:30 <span>Sold Out</span></div>
+                    <div class="time-slot" onclick="selectTime(this)">12:00</div>
+                    <div class="time-slot" onclick="selectTime(this)">12:30</div>
+                    <div class="time-slot sold-out">13:00 <span>Sold Out</span></div>
+                    <div class="time-slot" onclick="selectTime(this)">13:30</div>
+                    <div class="time-slot" onclick="selectTime(this)">14:00</div>
+                </div>
+                
+                <button class="cta-button" onclick="showScreen('screen-tickets')">continue</button>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 5: Ticket Type Selection -->
+        <div class="screen" id="screen-tickets">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="booking-card">
+                    <div class="card-image"></div>
+                    <div class="card-info">
+                        <h3>Modern Art Exhibition</h3>
+                        <p>Tokyo Museum</p>
+                        <p>Jan 1 - Mar 31, 2025</p>
+                    </div>
+                </div>
+                
+                <div class="ticket-selection">
+                    <h2>ticket</h2>
+                    <div class="ticket-type">
+                        <span>Adult</span>
+                        <div class="counter">
+                            <button onclick="decrementTicket('adult')">-</button>
+                            <span id="adult-count">0</span>
+                            <button onclick="incrementTicket('adult')">+</button>
+                        </div>
+                    </div>
+                    <div class="ticket-type">
+                        <span>Child</span>
+                        <div class="counter">
+                            <button onclick="decrementTicket('child')">-</button>
+                            <span id="child-count">0</span>
+                            <button onclick="incrementTicket('child')">+</button>
+                        </div>
+                    </div>
+                    <div class="ticket-type">
+                        <span>Student</span>
+                        <div class="counter">
+                            <button onclick="decrementTicket('student')">-</button>
+                            <span id="student-count">0</span>
+                            <button onclick="incrementTicket('student')">+</button>
+                        </div>
+                    </div>
+                    <div class="ticket-type">
+                        <span>Senior</span>
+                        <div class="counter">
+                            <button onclick="decrementTicket('senior')">-</button>
+                            <span id="senior-count">0</span>
+                            <button onclick="incrementTicket('senior')">+</button>
+                        </div>
+                    </div>
+                    <div class="ticket-type">
+                        <span>Disabled</span>
+                        <div class="counter">
+                            <button onclick="decrementTicket('disabled')">-</button>
+                            <span id="disabled-count">0</span>
+                            <button onclick="incrementTicket('disabled')">+</button>
+                        </div>
+                    </div>
+                    <div class="ticket-type">
+                        <span>Disabled company</span>
+                        <div class="counter">
+                            <button onclick="decrementTicket('disabled-company')">-</button>
+                            <span id="disabled-company-count">0</span>
+                            <button onclick="incrementTicket('disabled-company')">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="cta-button" onclick="showScreen('screen-summary')">continue</button>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 6: Order Summary -->
+        <div class="screen" id="screen-summary">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="order-summary">
+                    <div class="summary-card">
+                        <div class="card-image"></div>
+                        <div class="card-info">
+                            <h3>Modern Art Exhibition</h3>
+                            <p>Tokyo Museum</p>
+                            <p>July 10, 2025 at 10:00</p>
+                            <p class="ticket-info">Adult x2</p>
+                        </div>
+                    </div>
+                    
+                    <button class="cta-button" onclick="showScreen('screen-payment')">check out</button>
+                    
+                    <a href="#" class="back-link" onclick="goBack(); return false;">back to select</a>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 7: Payment -->
+        <div class="screen" id="screen-payment">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <h2>Select Payment</h2>
+                
+                <div class="payment-form">
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="credit" checked>
+                            <span>Credit Card</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="apple">
+                            <span>Apple Pay</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="google">
+                            <span>Google Pay</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="paypal">
+                            <span>PayPal</span>
+                        </label>
+                    </div>
+                    
+                    <div class="card-form" id="card-form">
+                        <input type="text" placeholder="card number" maxlength="16">
+                        <input type="text" placeholder="card holder name">
+                        <div class="form-row">
+                            <input type="text" placeholder="expire date" maxlength="5">
+                            <input type="text" placeholder="code" maxlength="3">
+                        </div>
+                    </div>
+                    
+                    <div class="security-info">
+                        <p>🔒 Your payment information is encrypted and secure</p>
+                    </div>
+                    
+                    <label class="checkbox-container">
+                        <input type="checkbox" required>
+                        <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Refund Policy</a></span>
+                    </label>
+                    
+                    <button class="cta-button" onclick="processPayment()">proceed</button>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 8: Confirmation -->
+        <div class="screen" id="screen-confirmation">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <h2>Confirmation</h2>
+                
+                <div class="confirmation-details">
+                    <div class="summary-card">
+                        <div class="card-image"></div>
+                        <div class="card-info">
+                            <h3>Modern Art Exhibition</h3>
+                            <p>Tokyo Museum</p>
+                            <p>July 10, 2025 at 10:00</p>
+                            <p>Adult x2</p>
+                            <p class="total">Total: ¥00.00</p>
+                        </div>
+                    </div>
+                    
+                    <button class="cta-button" onclick="showScreen('screen-my-tickets')">view my tickets</button>
+                    
+                    <a href="#" class="back-link" onclick="goHome(); return false;">back to home</a>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 9: My Tickets -->
+        <div class="screen" id="screen-my-tickets">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <h2>My tickets</h2>
+                
+                <div class="tickets-list">
+                    <div class="ticket-item" onclick="showScreen('screen-ticket-detail')">
+                        <div class="card-image"></div>
+                        <div class="card-info">
+                            <h3>Modern Art Exhibition</h3>
+                            <p>Tokyo Museum</p>
+                            <p>July 10, 2025</p>
+                        </div>
+                    </div>
+                    <div class="ticket-item" onclick="showScreen('screen-ticket-detail')">
+                        <div class="card-image"></div>
+                        <div class="card-info">
+                            <h3>Ancient History</h3>
+                            <p>National Museum</p>
+                            <p>August 15, 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen 10: Ticket Detail with QR -->
+        <div class="screen" id="screen-ticket-detail">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="ticket-detail">
+                    <div class="summary-card">
+                        <div class="card-image"></div>
+                        <div class="card-info">
+                            <h3>Modern Art Exhibition</h3>
+                            <p>Tokyo Museum</p>
+                            <p>July 10, 2025 at 10:00</p>
+                            <p>Adult x2</p>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-codes">
+                        <div class="qr-code" id="qr1"></div>
+                        <div class="qr-code" id="qr2"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+    </div>
+
+        <!-- Screen: All Exhibitions -->
+        <div class="screen" id="screen-all-exhibitions">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <h2>All Exhibitions</h2>
+                <div class="exhibition-list" id="all-exhibitions-list">
+                    <!-- All exhibitions will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen: Popular Exhibitions -->
+        <div class="screen" id="screen-popular-exhibitions">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <h2>Popular Exhibitions</h2>
+                <div class="exhibition-list" id="popular-exhibitions-list">
+                    <!-- Popular exhibitions will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen: About Visit Museums -->
+        <div class="screen" id="screen-about">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu()">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown" id="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="about-content">
+                    <h2>About Visit Museums</h2>
+                    
+                    <div class="about-section">
+                        <h3>Welcome to Visit Museums</h3>
+                        <p>Visit Museums is your gateway to discovering and exploring the world's most fascinating exhibitions. We connect art lovers, history enthusiasts, and curious minds with extraordinary cultural experiences.</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>Our Mission</h3>
+                        <p>To make museum visits accessible, convenient, and inspiring for everyone. We believe that art and culture should be available to all, and we're here to help you discover your next favorite exhibition.</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>What We Offer</h3>
+                        <ul>
+                            <li>Easy ticket booking for exhibitions worldwide</li>
+                            <li>Curated recommendations based on your interests</li>
+                            <li>Real-time availability and crowd information</li>
+                            <li>Digital tickets with QR codes</li>
+                            <li>Exclusive access to special exhibitions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>Contact Us</h3>
+                        <p>Email: support@visitmuseums.com</p>
+                        <p>Phone: +81 3-1234-5678</p>
+                        <p>Address: Tokyo, Japan</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>Version</h3>
+                        <p>Visit Museums v1.0.0</p>
+                        <p>© 2025 Visit Museums. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Additional Screen: Settings -->
+        <div class="screen" id="screen-settings">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <h1 class="app-title">Settings</h1>
+                <div class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="settings-section">
+                    <h3>Account</h3>
+                    <div class="settings-item" onclick="showScreen('screen-profile')">
+                        <span>Profile Information</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Change Password</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Email Preferences</span>
+                        <span>→</span>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Preferences</h3>
+                    <div class="settings-item">
+                        <span>Language</span>
+                        <span>English →</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Currency</span>
+                        <span>JPY ¥ →</span>
+                    </div>
+                    <div class="settings-item">
+                        <label class="toggle-item">
+                            <span>Push Notifications</span>
+                            <input type="checkbox" checked>
+                            <span class="toggle"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Privacy & Security</h3>
+                    <div class="settings-item">
+                        <span>Privacy Policy</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Terms of Service</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <label class="toggle-item">
+                            <span>Face ID / Touch ID</span>
+                            <input type="checkbox">
+                            <span class="toggle"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <button class="danger-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Additional Screen: Help & FAQ -->
+        <div class="screen" id="screen-help">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <h1 class="app-title">Help & FAQ</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="help-search">
+                    <input type="text" class="search-bar" placeholder="Search for help...">
+                </div>
+                
+                <div class="faq-section">
+                    <h3>Frequently Asked Questions</h3>
+                    
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            <span>How do I cancel my ticket?</span>
+                            <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You can cancel your ticket up to 24 hours before the exhibition date. Go to My Tickets, select the ticket you want to cancel, and tap "Cancel Ticket". Refunds will be processed within 3-5 business days.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            <span>Can I change my visit date?</span>
+                            <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, you can modify your visit date up to 48 hours before your scheduled visit. Additional charges may apply if the new date has a different price.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            <span>What payment methods are accepted?</span>
+                            <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We accept Credit Cards (Visa, Mastercard, JCB), Apple Pay, Google Pay, and PayPal. All payments are processed securely with 256-bit encryption.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" onclick="toggleFAQ(this)">
+                        <div class="faq-question">
+                            <span>How do I use my QR code ticket?</span>
+                            <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Show your QR code at the museum entrance. Make sure your screen brightness is turned up. Each QR code can only be scanned once.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-section">
+                    <h3>Still need help?</h3>
+                    <button class="cta-button">Contact Support</button>
+                    <p class="contact-info">support@visitmuseums.com<br>+81 3-1234-5678</p>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen: All Exhibitions -->
+        <div class="screen" id="screen-all-exhibitions">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <h1 class="app-title">All Exhibitions</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="results-count" id="all-exhibitions-count">Loading exhibitions...</div>
+                <div class="exhibition-list" id="all-exhibitions-list"></div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen: Popular Exhibitions -->
+        <div class="screen" id="screen-popular-exhibitions">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <h1 class="app-title">Popular Exhibitions</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="results-count" id="popular-exhibitions-count">Loading exhibitions...</div>
+                <div class="exhibition-list" id="popular-exhibitions-list"></div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+        <!-- Screen: About Visit Museums -->
+        <div class="screen" id="screen-about">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <h1 class="app-title">About Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu" id="main-menu">
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="hero-image"></div>
+                
+                <div class="about-section">
+                    <h2>About Visit Museums</h2>
+                    <p>Visit Museums is your gateway to discovering amazing exhibitions and cultural experiences across Tokyo and beyond. We connect art lovers, history enthusiasts, and curious minds with the world's finest museums and galleries.</p>
+                    
+                    <h3>Our Mission</h3>
+                    <p>To make museum visits accessible, convenient, and enjoyable for everyone. We believe that art and culture should be available to all, and we're here to help you explore, learn, and be inspired.</p>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Browse and book tickets for exhibitions</li>
+                        <li>Check real-time availability and crowd levels</li>
+                        <li>Secure payment processing</li>
+                        <li>Digital tickets with QR codes</li>
+                        <li>Personalized recommendations</li>
+                        <li>24/7 customer support</li>
+                    </ul>
+                    
+                    <h3>Contact Us</h3>
+                    <p>Email: info@visitmuseums.com<br>
+                    Phone: +81 3-1234-5678<br>
+                    Address: 1-1-1 Shibuya, Tokyo 150-0002</p>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>footer</p>
+            </footer>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
