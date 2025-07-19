@@ -42,6 +42,8 @@ const popularExhibitions = [
         title: 'Modern Art',
         museum: 'Tokyo Museum',
         period: 'Jan 1 - Mar 31',
+        startDate: new Date('2025-01-01'),
+        endDate: new Date('2025-03-31'),
         tags: ['contemporary', 'abstract', 'open now'],
         price: 2000,
         image: 'modern-art.jpg'
@@ -51,6 +53,8 @@ const popularExhibitions = [
         title: 'Ancient History',
         museum: 'National Museum',
         period: 'Feb 15 - May 20',
+        startDate: new Date('2025-02-15'),
+        endDate: new Date('2025-05-20'),
         tags: ['history', 'archaeology', 'open now'],
         price: 1800,
         image: 'ancient-history.jpg'
@@ -60,6 +64,8 @@ const popularExhibitions = [
         title: 'Photography',
         museum: 'Art Gallery',
         period: 'Mar 10 - Jun 30',
+        startDate: new Date('2025-03-10'),
+        endDate: new Date('2025-06-30'),
         tags: ['photography', 'contemporary', 'open now'],
         price: 1500,
         image: 'photography.jpg'
@@ -73,7 +79,9 @@ const allExhibitions = [
         title: 'Music & Sound',
         museum: 'Audio Museum',
         period: 'Apr 1 - Jul 15',
-        tags: ['music', 'interactive', 'contemporary'],
+        startDate: new Date('2025-04-01'),
+        endDate: new Date('2025-07-15'),
+        tags: ['music', 'interactive', 'contemporary', 'open soon'],
         price: 2200,
         image: 'music-sound.jpg'
     },
@@ -82,7 +90,9 @@ const allExhibitions = [
         title: 'Digital Art Revolution',
         museum: 'Mori Art Museum',
         period: 'May 1 - Aug 31',
-        tags: ['digital', 'contemporary', 'interactive'],
+        startDate: new Date('2025-05-01'),
+        endDate: new Date('2025-08-31'),
+        tags: ['digital', 'contemporary', 'interactive', 'open soon'],
         price: 1800,
         image: 'digital-art.jpg'
     },
@@ -91,6 +101,8 @@ const allExhibitions = [
         title: 'Impressionist Masters',
         museum: 'Tokyo National Museum',
         period: 'Mar 15 - Jun 30',
+        startDate: new Date('2025-03-15'),
+        endDate: new Date('2025-06-30'),
         tags: ['impressionism', 'classic', 'open now'],
         price: 2500,
         image: 'impressionist.jpg'
@@ -100,7 +112,9 @@ const allExhibitions = [
         title: 'Abstract Expressions',
         museum: 'Contemporary Art Center',
         period: 'Jun 1 - Sep 15',
-        tags: ['abstract', 'contemporary', 'painting'],
+        startDate: new Date('2025-06-01'),
+        endDate: new Date('2025-09-15'),
+        tags: ['abstract', 'contemporary', 'painting', 'open soon'],
         price: 1900,
         image: 'abstract.jpg'
     },
@@ -109,6 +123,8 @@ const allExhibitions = [
         title: 'Traditional Crafts',
         museum: 'Craft Museum',
         period: 'Year round',
+        startDate: new Date('2025-01-01'),
+        endDate: new Date('2025-12-31'),
         tags: ['traditional', 'crafts', 'open now'],
         price: 1200,
         image: 'crafts.jpg'
@@ -118,7 +134,9 @@ const allExhibitions = [
         title: 'Science & Technology',
         museum: 'Science Museum',
         period: 'Apr 20 - Oct 31',
-        tags: ['science', 'technology', 'interactive'],
+        startDate: new Date('2025-04-20'),
+        endDate: new Date('2025-10-31'),
+        tags: ['science', 'technology', 'interactive', 'open soon'],
         price: 1600,
         image: 'science.jpg'
     },
@@ -127,7 +145,9 @@ const allExhibitions = [
         title: 'Sculpture Garden',
         museum: 'Outdoor Museum',
         period: 'May 10 - Nov 30',
-        tags: ['sculpture', 'outdoor', 'contemporary'],
+        startDate: new Date('2025-05-10'),
+        endDate: new Date('2025-11-30'),
+        tags: ['sculpture', 'outdoor', 'contemporary', 'open soon'],
         price: 1400,
         image: 'sculpture.jpg'
     },
@@ -136,7 +156,9 @@ const allExhibitions = [
         title: 'Virtual Reality World',
         museum: 'Tech Gallery',
         period: 'Jun 15 - Dec 31',
-        tags: ['digital', 'interactive', 'technology'],
+        startDate: new Date('2025-06-15'),
+        endDate: new Date('2025-12-31'),
+        tags: ['digital', 'interactive', 'technology', 'open soon'],
         price: 2800,
         image: 'vr-world.jpg'
     },
@@ -145,16 +167,47 @@ const allExhibitions = [
         title: 'Classical Music History',
         museum: 'Music Hall',
         period: 'Jul 1 - Sep 30',
-        tags: ['music', 'history', 'classical'],
+        startDate: new Date('2025-07-01'),
+        endDate: new Date('2025-09-30'),
+        tags: ['music', 'history', 'classical', 'open soon'],
         price: 1700,
         image: 'classical-music.jpg'
     }
 ];
 
-// Combined exhibitions for search
-const exhibitionsData = [...popularExhibitions, ...allExhibitions];
+// Function to update exhibition status based on current date
+function updateExhibitionStatus(exhibitions) {
+    const today = new Date();
+    const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+    const thirtyDaysBeforeEnd = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+    
+    return exhibitions.map(exhibition => {
+        const exhibit = {...exhibition};
+        const tags = exhibit.tags.filter(tag => !['open now', 'open soon', 'close soon'].includes(tag));
+        
+        if (exhibit.startDate <= today && exhibit.endDate >= today) {
+            // Check if closing soon (within 30 days)
+            if (exhibit.endDate <= thirtyDaysBeforeEnd) {
+                tags.push('close soon');
+            }
+            tags.push('open now');
+        } else if (exhibit.startDate > today && exhibit.startDate <= thirtyDaysFromNow) {
+            tags.push('open soon');
+        }
+        
+        exhibit.tags = tags;
+        return exhibit;
+    });
+}
 
-let filteredExhibitions = allExhibitions;
+// Update exhibitions with current status
+const popularExhibitionsWithStatus = updateExhibitionStatus(popularExhibitions);
+const allExhibitionsWithStatus = updateExhibitionStatus(allExhibitions);
+
+// Combined exhibitions for search
+const exhibitionsData = [...popularExhibitionsWithStatus, ...allExhibitionsWithStatus];
+
+let filteredExhibitions = allExhibitionsWithStatus;
 let selectedTags = [];
 
 function showScreen(screenId, addToHistory = true) {
@@ -569,16 +622,15 @@ function toggleTag(tag) {
     } else {
         selectedTags.push(tag);
     }
-    filterExhibitions();
+    filterAndRenderExhibitions();
     updateTagButtons();
-    renderExhibitions();
 }
 
 function filterExhibitions() {
     if (selectedTags.length === 0) {
-        filteredExhibitions = allExhibitions;
+        filteredExhibitions = allExhibitionsWithStatus;
     } else {
-        filteredExhibitions = allExhibitions.filter(exhibition => 
+        filteredExhibitions = allExhibitionsWithStatus.filter(exhibition => 
             selectedTags.every(tag => exhibition.tags.includes(tag))
         );
     }
@@ -606,9 +658,12 @@ function toggleMoreFilters() {
 
 function clearAllFilters() {
     selectedTags = [];
-    filterExhibitions();
+    searchQuery = '';
+    // Clear search input if exists
+    const searchInput = document.getElementById('home-search');
+    if (searchInput) searchInput.value = '';
+    filterAndRenderExhibitions();
     updateTagButtons();
-    renderExhibitions();
 }
 
 function renderExhibitions() {
@@ -620,7 +675,7 @@ function renderExhibitions() {
     
     // Popular exhibitions are always fixed
     if (popularGrid) {
-        popularGrid.innerHTML = generateExhibitionCards(popularExhibitions);
+        popularGrid.innerHTML = generateExhibitionCards(popularExhibitionsWithStatus);
     }
     
     // Bottom area shows filtered results
@@ -655,7 +710,13 @@ function generateExhibitionCards(exhibitions) {
             <p>${exhibition.museum}</p>
             <p>${exhibition.period}</p>
             <div class="tags">
-                ${exhibition.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                ${exhibition.tags.map(tag => {
+                    let className = 'tag';
+                    if (tag === 'open now') className += ' tag-open-now';
+                    else if (tag === 'open soon') className += ' tag-open-soon';
+                    else if (tag === 'close soon') className += ' tag-close-soon';
+                    return `<span class="${className}">${tag}</span>`;
+                }).join('')}
             </div>
         </div>
     `).join('');
@@ -671,7 +732,13 @@ function generateSearchExhibitionItems(exhibitions) {
                 <p>${exhibition.period}</p>
                 <p class="price">¥${exhibition.price.toLocaleString()}</p>
                 <div class="tags">
-                    ${exhibition.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    ${exhibition.tags.map(tag => {
+                        let className = 'tag';
+                        if (tag === 'open now') className += ' tag-open-now';
+                        else if (tag === 'open soon') className += ' tag-open-soon';
+                        else if (tag === 'close soon') className += ' tag-close-soon';
+                        return `<span class="${className}">${tag}</span>`;
+                    }).join('')}
                 </div>
             </div>
         </div>
@@ -724,6 +791,259 @@ function renderPopularExhibitions() {
     }
     
     if (list) {
-        list.innerHTML = generateSearchExhibitionItems(popularExhibitions);
+        list.innerHTML = generateSearchExhibitionItems(popularExhibitionsWithStatus);
+    }
+}
+
+// Search functionality
+let searchQuery = '';
+
+function searchExhibitions(query) {
+    searchQuery = query.toLowerCase();
+    filterAndRenderExhibitions();
+    toggleClearButton('home-search');
+}
+
+function filterAndRenderExhibitions() {
+    let filtered = allExhibitionsWithStatus;
+    
+    // Apply search query
+    if (searchQuery) {
+        filtered = filtered.filter(exhibition => 
+            exhibition.title.toLowerCase().includes(searchQuery) ||
+            exhibition.museum.toLowerCase().includes(searchQuery) ||
+            exhibition.tags.some(tag => tag.toLowerCase().includes(searchQuery))
+        );
+    }
+    
+    // Apply tag filters
+    if (selectedTags.length > 0) {
+        filtered = filtered.filter(exhibition => 
+            selectedTags.every(tag => exhibition.tags.includes(tag))
+        );
+    }
+    
+    filteredExhibitions = filtered;
+    renderExhibitions();
+    
+    // Show no results message if needed
+    showNoResultsMessage('filtered-results-section', filtered.length === 0 && (searchQuery || selectedTags.length > 0));
+}
+
+function filterExhibitions() {
+    if (selectedTags.length === 0) {
+        filteredExhibitions = allExhibitionsWithStatus;
+    } else {
+        filteredExhibitions = allExhibitionsWithStatus.filter(exhibition => 
+            selectedTags.every(tag => exhibition.tags.includes(tag))
+        );
+    }
+    
+    renderExhibitions();
+    
+    // Show no results message if needed
+    showNoResultsMessage('filtered-results-section', filteredExhibitions.length === 0 && selectedTags.length > 0);
+}
+
+// FAQ search functionality
+function searchFAQ(query) {
+    const faqItems = document.querySelectorAll('.faq-item');
+    const searchTerm = query.toLowerCase();
+    toggleClearButton('help-search');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
+        
+        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+            item.style.display = 'block';
+            if (searchTerm && searchTerm.length > 2) {
+                item.classList.add('active'); // Expand matching FAQs
+            }
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    // Show all FAQs if search is empty
+    if (!searchTerm) {
+        faqItems.forEach(item => {
+            item.style.display = 'block';
+            item.classList.remove('active');
+        });
+    }
+    
+    // Show no results message if no FAQs match
+    const faqSection = document.querySelector('.faq-section');
+    let noResultsDiv = faqSection.querySelector('.no-results');
+    
+    const visibleFAQs = Array.from(faqItems).filter(item => item.style.display !== 'none');
+    
+    if (searchTerm && visibleFAQs.length === 0) {
+        if (!noResultsDiv) {
+            noResultsDiv = document.createElement('div');
+            noResultsDiv.className = 'no-results';
+            noResultsDiv.innerHTML = '<p>No help articles found matching your search.</p><p>Try searching with different keywords or browse all questions below.</p>';
+            faqSection.appendChild(noResultsDiv);
+        }
+        noResultsDiv.style.display = 'block';
+    } else {
+        if (noResultsDiv) {
+            noResultsDiv.style.display = 'none';
+        }
+    }
+}
+
+// Function to toggle clear button visibility
+function toggleClearButton(inputId) {
+    const input = document.getElementById(inputId);
+    const clearBtn = document.getElementById(inputId + '-clear');
+    
+    if (input && clearBtn) {
+        if (input.value.length > 0) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+    }
+}
+
+// Function to clear search input
+function clearSearch(inputId) {
+    const input = document.getElementById(inputId);
+    const clearBtn = document.getElementById(inputId + '-clear');
+    
+    if (input) {
+        input.value = '';
+        input.focus();
+        
+        // Trigger the appropriate search function
+        if (inputId === 'home-search') {
+            searchExhibitions('');
+        } else if (inputId === 'all-exhibitions-search') {
+            searchAllExhibitions('');
+        } else if (inputId === 'popular-exhibitions-search') {
+            searchPopularExhibitions('');
+        } else if (inputId === 'help-search') {
+            searchFAQ('');
+        }
+    }
+    
+    if (clearBtn) {
+        clearBtn.style.display = 'none';
+    }
+}
+
+// Search for all exhibitions page
+function searchAllExhibitions(query) {
+    const searchTerm = query.toLowerCase();
+    const count = document.getElementById('all-exhibitions-count');
+    const list = document.getElementById('all-exhibitions-list');
+    toggleClearButton('all-exhibitions-search');
+    
+    const filtered = exhibitionsData.filter(exhibition => 
+        exhibition.title.toLowerCase().includes(searchTerm) ||
+        exhibition.museum.toLowerCase().includes(searchTerm) ||
+        exhibition.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+    );
+    
+    if (count) {
+        count.textContent = `${filtered.length} exhibitions found`;
+    }
+    
+    if (list) {
+        if (filtered.length === 0 && searchTerm) {
+            list.innerHTML = '<div class="no-results"><p>No exhibitions found matching your search.</p><p>Try searching with different keywords or check your spelling.</p></div>';
+        } else {
+            list.innerHTML = generateSearchExhibitionItems(filtered);
+        }
+    }
+}
+
+// Search for popular exhibitions page
+function searchPopularExhibitions(query) {
+    const searchTerm = query.toLowerCase();
+    const count = document.getElementById('popular-exhibitions-count');
+    const list = document.getElementById('popular-exhibitions-list');
+    toggleClearButton('popular-exhibitions-search');
+    
+    const filtered = popularExhibitionsWithStatus.filter(exhibition => 
+        exhibition.title.toLowerCase().includes(searchTerm) ||
+        exhibition.museum.toLowerCase().includes(searchTerm) ||
+        exhibition.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+    );
+    
+    if (count) {
+        count.textContent = `${filtered.length} popular exhibitions`;
+    }
+    
+    if (list) {
+        if (filtered.length === 0 && searchTerm) {
+            list.innerHTML = '<div class="no-results"><p>No popular exhibitions found matching your search.</p><p>Try searching with different keywords or check your spelling.</p></div>';
+        } else {
+            list.innerHTML = generateSearchExhibitionItems(filtered);
+        }
+    }
+}
+
+// Function to show/hide no results message for home page
+function showNoResultsMessage(sectionClass, show) {
+    const section = document.querySelector(`.${sectionClass}`);
+    if (!section) return;
+    
+    let noResultsDiv = section.querySelector('.no-results');
+    
+    if (show) {
+        if (!noResultsDiv) {
+            noResultsDiv = document.createElement('div');
+            noResultsDiv.className = 'no-results';
+            noResultsDiv.innerHTML = '<p>No exhibitions found matching your search and filters.</p><p>Try adjusting your search terms or removing some filters.</p>';
+            section.appendChild(noResultsDiv);
+        }
+        noResultsDiv.style.display = 'block';
+    } else {
+        if (noResultsDiv) {
+            noResultsDiv.style.display = 'none';
+        }
+    }
+}
+
+// Function to toggle clear button visibility
+function toggleClearButton(inputId) {
+    const input = document.getElementById(inputId);
+    const clearBtn = document.getElementById(inputId + '-clear');
+    
+    if (input && clearBtn) {
+        if (input.value.length > 0) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+    }
+}
+
+// Function to clear search input
+function clearSearch(inputId) {
+    const input = document.getElementById(inputId);
+    const clearBtn = document.getElementById(inputId + '-clear');
+    
+    if (input) {
+        input.value = '';
+        input.focus();
+        
+        // Trigger the appropriate search function
+        if (inputId === 'home-search') {
+            searchExhibitions('');
+        } else if (inputId === 'all-exhibitions-search') {
+            searchAllExhibitions('');
+        } else if (inputId === 'popular-exhibitions-search') {
+            searchPopularExhibitions('');
+        } else if (inputId === 'help-search') {
+            searchFAQ('');
+        }
+    }
+    
+    if (clearBtn) {
+        clearBtn.style.display = 'none';
     }
 }

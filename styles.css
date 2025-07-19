@@ -168,14 +168,64 @@ body {
     color: #666;
 }
 
+.search-input-container {
+    position: relative;
+    width: 100%;
+}
+
 .search-bar {
     width: 100%;
-    padding: 12px 20px;
+    padding: 12px 45px 12px 20px;
     background-color: #e0e0e0;
     border: none;
     border-radius: 25px;
     margin-bottom: 20px;
     font-size: 16px;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.clear-search-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.search-input-container .search-bar {
+    margin-bottom: 0;
+}
+
+.search-filters .search-input-container {
+    flex: 1;
+}
+
+.search-filters .search-input-container .search-bar {
+    margin-bottom: 0;
+}
+
+#all-exhibitions-search,
+#popular-exhibitions-search {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.search-input-container:not(.search-filters .search-input-container) {
+    margin-bottom: 15px;
 }
 
 .popular-section h2,
@@ -433,6 +483,21 @@ body {
     border-radius: 10px;
     font-size: 10px;
     font-weight: 500;
+}
+
+.tag-open-now {
+    background-color: #6bcf7f;
+    color: white;
+}
+
+.tag-open-soon {
+    background-color: #ffd93d;
+    color: #333;
+}
+
+.tag-close-soon {
+    background-color: #ff6b6b;
+    color: white;
 }
 
 .pagination {
@@ -1283,6 +1348,26 @@ input[type="checkbox"]:checked + .toggle::after {
     color: #666;
     margin-bottom: 5px;
     line-height: 1.5;
+}
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.no-results p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.no-results p:first-child {
+    font-weight: 600;
+    color: #333;
 }
 
 .faq-section h3 {

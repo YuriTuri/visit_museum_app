@@ -131,7 +131,10 @@
                 
                 <div class="search-filters">
                     <div class="search-row">
-                        <input type="text" class="search-bar" placeholder="Search...">
+                        <div class="search-input-container">
+                            <input type="text" class="search-bar" id="home-search" placeholder="Search exhibitions..." oninput="searchExhibitions(this.value)">
+                            <button class="clear-search-btn" id="home-search-clear" onclick="clearSearch('home-search')" style="display: none;">×</button>
+                        </div>
                         <button class="more-filters-btn" onclick="toggleMoreFilters()">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <path d="M8 12L12 8L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -143,9 +146,10 @@
                     </div>
                     <div class="filter-buttons">
                         <button class="filter-btn tag-btn" onclick="toggleTag('open now')">open now</button>
+                        <button class="filter-btn tag-btn" onclick="toggleTag('open soon')">open soon</button>
+                        <button class="filter-btn tag-btn" onclick="toggleTag('close soon')">close soon</button>
                         <button class="filter-btn tag-btn" onclick="toggleTag('contemporary')">contemporary</button>
                         <button class="filter-btn tag-btn" onclick="toggleTag('abstract')">abstract</button>
-                        <button class="filter-btn tag-btn" onclick="toggleTag('music')">music</button>
                     </div>
                 </div>
                 
@@ -157,6 +161,14 @@
                             <button class="close-filters-btn" onclick="toggleMoreFilters()">×</button>
                         </div>
                         <div class="filter-categories">
+                            <div class="filter-category">
+                                <h4>Schedule</h4>
+                                <div class="filter-options">
+                                    <button class="filter-option tag-btn" onclick="toggleTag('open now')">open now</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('open soon')">open soon</button>
+                                    <button class="filter-option tag-btn" onclick="toggleTag('close soon')">close soon</button>
+                                </div>
+                            </div>
                             <div class="filter-category">
                                 <h4>Type</h4>
                                 <div class="filter-options">
@@ -1233,7 +1245,10 @@
             
             <div class="content">
                 <div class="help-search">
-                    <input type="text" class="search-bar" placeholder="Search for help...">
+                    <div class="search-input-container">
+                        <input type="text" class="search-bar" id="help-search" placeholder="Search for help..." oninput="searchFAQ(this.value)">
+                        <button class="clear-search-btn" id="help-search-clear" onclick="clearSearch('help-search')" style="display: none;">×</button>
+                    </div>
                 </div>
                 
                 <div class="faq-section">
@@ -1313,6 +1328,10 @@
             </header>
             
             <div class="content">
+                <div class="search-input-container">
+                    <input type="text" class="search-bar" id="all-exhibitions-search" placeholder="Search all exhibitions..." oninput="searchAllExhibitions(this.value)">
+                    <button class="clear-search-btn" id="all-exhibitions-search-clear" onclick="clearSearch('all-exhibitions-search')" style="display: none;">×</button>
+                </div>
                 <div class="results-count" id="all-exhibitions-count">Loading exhibitions...</div>
                 <div class="exhibition-list" id="all-exhibitions-list"></div>
             </div>
@@ -1343,6 +1362,10 @@
             </header>
             
             <div class="content">
+                <div class="search-input-container">
+                    <input type="text" class="search-bar" id="popular-exhibitions-search" placeholder="Search popular exhibitions..." oninput="searchPopularExhibitions(this.value)">
+                    <button class="clear-search-btn" id="popular-exhibitions-search-clear" onclick="clearSearch('popular-exhibitions-search')" style="display: none;">×</button>
+                </div>
                 <div class="results-count" id="popular-exhibitions-count">Loading exhibitions...</div>
                 <div class="exhibition-list" id="popular-exhibitions-list"></div>
             </div>
