@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=375, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Visit Museums</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -64,11 +64,11 @@
         <!-- Screen 1: Home -->
         <div class="screen" id="screen-home">
             <header class="app-header">
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -79,6 +79,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -88,14 +89,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -103,8 +106,6 @@
             </header>
             
             <div class="content">
-                <input type="text" class="search-bar" placeholder="Search exhibitions...">
-                
                 <section class="popular-section">
                     <h2>Popular exhibitions</h2>
                     <div class="exhibition-grid">
@@ -125,6 +126,24 @@
                             <h3>Photography</h3>
                             <p>Art Gallery</p>
                             <p>Mar 10 - Jun 30</p>
+                        </div>
+                        <div class="exhibition-card" onclick="showScreen('screen-detail')">
+                            <div class="card-image"></div>
+                            <h3>Contemporary</h3>
+                            <p>Modern Gallery</p>
+                            <p>Apr 1 - Jul 15</p>
+                        </div>
+                        <div class="exhibition-card" onclick="showScreen('screen-detail')">
+                            <div class="card-image"></div>
+                            <h3>Sculpture</h3>
+                            <p>City Museum</p>
+                            <p>May 1 - Aug 30</p>
+                        </div>
+                        <div class="exhibition-card" onclick="showScreen('screen-detail')">
+                            <div class="card-image"></div>
+                            <h3>Digital Art</h3>
+                            <p>Tech Gallery</p>
+                            <p>Jun 1 - Sep 15</p>
                         </div>
                     </div>
                 </section>
@@ -148,8 +167,9 @@
                         <button class="filter-btn tag-btn" onclick="toggleTag('open now')">open now</button>
                         <button class="filter-btn tag-btn" onclick="toggleTag('open soon')">open soon</button>
                         <button class="filter-btn tag-btn" onclick="toggleTag('close soon')">close soon</button>
-                        <button class="filter-btn tag-btn" onclick="toggleTag('contemporary')">contemporary</button>
-                        <button class="filter-btn tag-btn" onclick="toggleTag('abstract')">abstract</button>
+                        <button class="filter-btn area-btn" onclick="toggleArea('Ueno')">Ueno</button>
+                        <button class="filter-btn area-btn" onclick="toggleArea('Shibuya')">Shibuya</button>
+                        <button class="filter-btn area-btn" onclick="toggleArea('Roppongi')">Roppongi</button>
                     </div>
                 </div>
                 
@@ -196,6 +216,20 @@
                                     <button class="filter-option tag-btn" onclick="toggleTag('crafts')">crafts</button>
                                 </div>
                             </div>
+                            <div class="filter-category">
+                                <h4>Area</h4>
+                                <div class="filter-options">
+                                    <button class="filter-option area-btn" onclick="toggleArea('Ueno')">Ueno</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Shibuya')">Shibuya</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Roppongi')">Roppongi</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Harajuku')">Harajuku</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Ginza')">Ginza</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Asakusa')">Asakusa</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Odaiba')">Odaiba</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Ebisu')">Ebisu</button>
+                                    <button class="filter-option area-btn" onclick="toggleArea('Shinjuku')">Shinjuku</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="filter-actions">
                             <button class="clear-filters-btn" onclick="clearAllFilters()">Clear All</button>
@@ -206,12 +240,33 @@
                 
                 <section class="filtered-results-section">
                     <h2 id="filtered-results-title">All exhibitions</h2>
-                    <div class="exhibition-grid"></div>
+                    <div class="results-count" id="home-exhibitions-count">Loading exhibitions...</div>
+                    <div class="exhibition-grid" id="home-exhibitions-grid"></div>
+                    <div class="pagination" id="home-exhibitions-pagination">
+                        <button class="pagination-btn" id="home-prev-page" onclick="goToHomePreviousPage()" disabled>Previous</button>
+                        <div class="page-numbers" id="home-page-numbers"></div>
+                        <button class="pagination-btn" id="home-next-page" onclick="goToHomeNextPage()">Next</button>
+                    </div>
                 </section>
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -219,11 +274,11 @@
         <div class="screen" id="screen-detail">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -234,6 +289,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -243,14 +299,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -258,7 +316,36 @@
             </header>
             
             <div class="content">
-                <div class="hero-image"></div>
+                <div class="image-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carousel-track">
+                            <div class="carousel-slide active">
+                                <div class="carousel-image" style="background-color: #FF6B6B;"></div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="carousel-image" style="background-color: #4ECDC4;"></div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="carousel-image" style="background-color: #45B7D1;"></div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="carousel-image" style="background-color: #96CEB4;"></div>
+                            </div>
+                            <div class="carousel-slide">
+                                <div class="carousel-image" style="background-color: #FECA57;"></div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-prev" onclick="prevSlide()">‹</button>
+                        <button class="carousel-btn carousel-next" onclick="nextSlide()">›</button>
+                    </div>
+                    <div class="carousel-indicators" id="carousel-indicators">
+                        <span class="indicator active" onclick="goToSlide(0)"></span>
+                        <span class="indicator" onclick="goToSlide(1)"></span>
+                        <span class="indicator" onclick="goToSlide(2)"></span>
+                        <span class="indicator" onclick="goToSlide(3)"></span>
+                        <span class="indicator" onclick="goToSlide(4)"></span>
+                    </div>
+                </div>
                 
                 <div class="tabs">
                     <button class="tab active">open now</button>
@@ -267,17 +354,88 @@
                 </div>
                 
                 <div class="exhibition-details">
-                    <h2>Modern Art Exhibition</h2>
-                    <p>Tokyo Museum</p>
-                    <p>Jan 1 - Mar 31, 2025</p>
+                    <div class="detail-header">
+                        <div class="detail-info">
+                            <h2>Modern Art Exhibition</h2>
+                            <p>Tokyo Museum</p>
+                            <p>Jan 1 - Mar 31, 2025</p>
+                        </div>
+                        <div class="detail-actions">
+                            <button class="heart-btn detail-heart" id="detail-heart-btn" onclick="toggleMyListFromDetail();">
+                                🤍
+                            </button>
+                            <button class="share-btn" onclick="shareExhibition();">
+                                📤
+                            </button>
+                        </div>
+                    </div>
                     
                     <div class="outline-section">
-                        <h3>Outline text</h3>
-                        <div class="placeholder-text">
-                            <div class="text-line"></div>
-                            <div class="text-line"></div>
-                            <div class="text-line"></div>
-                            <div class="text-line"></div>
+                        <h3>About This Exhibition</h3>
+                        <p>Discover the evolution of modern art through this comprehensive exhibition featuring works from renowned artists. Experience innovative techniques, bold expressions, and groundbreaking pieces that shaped contemporary artistic movements.</p>
+                    </div>
+
+                    <div class="info-sections">
+                        <div class="info-section">
+                            <h3>🎫 Ticket Prices</h3>
+                            <div class="price-list">
+                                <div class="price-item">
+                                    <span class="price-label">Adult</span>
+                                    <span class="price-value">¥2,000</span>
+                                </div>
+                                <div class="price-item">
+                                    <span class="price-label">Student</span>
+                                    <span class="price-value">¥1,000</span>
+                                </div>
+                                <div class="price-item">
+                                    <span class="price-label">Child (6-15)</span>
+                                    <span class="price-value">¥800</span>
+                                </div>
+                                <div class="price-item">
+                                    <span class="price-label">Senior (65+)</span>
+                                    <span class="price-value">¥1,500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <h3>🕒 Opening Hours</h3>
+                            <div class="hours-list">
+                                <div class="hours-item">
+                                    <span class="day-label">Tuesday - Thursday</span>
+                                    <span class="time-value">10:00 - 18:00</span>
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day-label">Friday - Saturday</span>
+                                    <span class="time-value">10:00 - 20:00</span>
+                                </div>
+                                <div class="hours-item">
+                                    <span class="day-label">Sunday</span>
+                                    <span class="time-value">10:00 - 17:00</span>
+                                </div>
+                                <div class="hours-item closed">
+                                    <span class="day-label">Monday</span>
+                                    <span class="time-value">Closed</span>
+                                </div>
+                            </div>
+                            <p class="hours-note">Last admission 30 minutes before closing</p>
+                        </div>
+
+                        <div class="info-section">
+                            <h3>📍 Location</h3>
+                            <div class="location-info">
+                                <p class="address">Tokyo Museum<br>1-2-3 Ueno, Taito City, Tokyo 110-0007</p>
+                                <div class="map-container">
+                                    <div class="map-placeholder" onclick="openGoogleMaps()">
+                                        <div class="map-icon">🗺️</div>
+                                        <p>View on Google Maps</p>
+                                    </div>
+                                </div>
+                                <div class="access-info">
+                                    <p><strong>Nearest Station:</strong> JR Ueno Station (5 min walk)</p>
+                                    <p><strong>Subway:</strong> Tokyo Metro Ginza/Hibiya Line Ueno Station</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -286,7 +444,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -294,11 +467,11 @@
         <div class="screen" id="screen-date">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -309,6 +482,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -318,14 +492,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -400,7 +576,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -408,11 +599,11 @@
         <div class="screen" id="screen-time">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -423,6 +614,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -432,14 +624,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -473,7 +667,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -481,11 +690,11 @@
         <div class="screen" id="screen-tickets">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -496,6 +705,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -505,14 +715,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -585,7 +797,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -593,11 +820,11 @@
         <div class="screen" id="screen-summary">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -608,6 +835,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -617,14 +845,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -650,7 +880,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -658,11 +903,11 @@
         <div class="screen" id="screen-payment">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -673,6 +918,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -682,14 +928,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -742,7 +990,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -750,11 +1013,11 @@
         <div class="screen" id="screen-confirmation">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -765,6 +1028,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -774,14 +1038,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -810,7 +1076,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -818,11 +1099,11 @@
         <div class="screen" id="screen-my-tickets">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -833,6 +1114,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -842,14 +1124,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -880,7 +1164,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -888,11 +1187,11 @@
         <div class="screen" id="screen-ticket-detail">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -903,6 +1202,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -912,14 +1212,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -946,74 +1248,36 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
     </div>
 
-        <!-- Screen: All Exhibitions -->
-        <div class="screen" id="screen-all-exhibitions">
-            <header class="app-header">
-                <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
-                    <div class="profile-icon">
-                        <span class="profile-initial">Y</span>
-                    </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
-                        <div class="profile-info">
-                            <div class="profile-avatar">
-                                <span>YK</span>
-                            </div>
-                            <div class="profile-details">
-                                <p class="profile-name">Yuri Kato</p>
-                                <p class="profile-email">yuri@example.com</p>
-                            </div>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
-                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
-                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
-                            <a href="#" onclick="logout(); return false;">Sign Out</a>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
-                <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="main-menu" id="main-menu">
-                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
-                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
-                    </div>
-                </div>
-            </header>
-            
-            <div class="content">
-                <h2>All Exhibitions</h2>
-                <div class="exhibition-list" id="all-exhibitions-list">
-                    <!-- All exhibitions will be populated by JavaScript -->
-                </div>
-            </div>
-            
-            <footer class="app-footer">
-                <p>footer</p>
-            </footer>
-        </div>
 
         <!-- Screen: Popular Exhibitions -->
         <div class="screen" id="screen-popular-exhibitions">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -1024,6 +1288,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1033,14 +1298,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1055,7 +1322,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -1063,11 +1345,11 @@
         <div class="screen" id="screen-about">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <div class="profile-section" onclick="toggleProfileMenu()">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
                     <div class="profile-icon">
                         <span class="profile-initial">Y</span>
                     </div>
-                    <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="profile-dropdown">
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <span>YK</span>
@@ -1078,6 +1360,7 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1087,14 +1370,16 @@
                 </div>
                 <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1142,7 +1427,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -1150,11 +1450,44 @@
         <div class="screen" id="screen-settings">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <h1 class="app-title">Settings</h1>
-                <div class="menu-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Settings</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
                 </div>
             </header>
             
@@ -1219,7 +1552,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -1229,14 +1577,16 @@
                 <div class="back-arrow" onclick="goBack()">←</div>
                 <h1 class="app-title">Help & FAQ</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1303,7 +1653,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -1311,16 +1676,41 @@
         <div class="screen" id="screen-all-exhibitions">
             <header class="app-header">
                 <div class="back-arrow" onclick="goBack()">←</div>
-                <h1 class="app-title">All Exhibitions</h1>
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">All Exhibitions</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1334,10 +1724,30 @@
                 </div>
                 <div class="results-count" id="all-exhibitions-count">Loading exhibitions...</div>
                 <div class="exhibition-list" id="all-exhibitions-list"></div>
+                <div class="pagination" id="all-exhibitions-pagination">
+                    <button class="pagination-btn" id="prev-page" onclick="goToPreviousPage()" disabled>Previous</button>
+                    <div class="page-numbers" id="page-numbers"></div>
+                    <button class="pagination-btn" id="next-page" onclick="goToNextPage()">Next</button>
+                </div>
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -1347,14 +1757,16 @@
                 <div class="back-arrow" onclick="goBack()">←</div>
                 <h1 class="app-title">Popular Exhibitions</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1371,7 +1783,22 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
@@ -1381,14 +1808,16 @@
                 <div class="back-arrow" onclick="goBack()">←</div>
                 <h1 class="app-title">About Visit Museums</h1>
                 <div class="menu-section">
-                    <div class="menu-icon" onclick="toggleMainMenu()">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="main-menu" id="main-menu">
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1423,7 +1852,98 @@
             </div>
             
             <footer class="app-footer">
-                <p>footer</p>
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Screen: My List (Interested) -->
+        <div class="screen" id="screen-my-list">
+            <header class="app-header">
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content">
+                <div class="exhibitions-container">
+                    <div class="exhibitions-count" id="my-list-count">0 exhibitions in your list</div>
+                    <div class="exhibitions-list" id="my-list-exhibitions">
+                        <div class="no-results">
+                            <p>No exhibitions added to your list yet.</p>
+                            <p>Browse exhibitions and tap the heart icon to add them to your list.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="app-footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
             </footer>
         </div>
 
