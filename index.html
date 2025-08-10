@@ -79,7 +79,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -98,7 +99,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -154,13 +156,9 @@
                             <input type="text" class="search-bar" id="home-search" placeholder="Search exhibitions..." oninput="searchExhibitions(this.value)">
                             <button class="clear-search-btn" id="home-search-clear" onclick="clearSearch('home-search')" style="display: none;">×</button>
                         </div>
-                        <button class="more-filters-btn" onclick="toggleMoreFilters()">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M8 12L12 8L16 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M2 5H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M6 9H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M10 13H10.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
+                        <button class="filter-btn" onclick="toggleMoreFilters()">
+                            <span class="filter-icon">🔍</span>
+                            <span class="filter-text">Filter</span>
                         </button>
                     </div>
                     <div class="filter-buttons">
@@ -289,7 +287,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -308,7 +307,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -357,7 +357,7 @@
                     <div class="detail-header">
                         <div class="detail-info">
                             <h2>Modern Art Exhibition</h2>
-                            <p>Tokyo Museum</p>
+                            <p class="museum-link" onclick="showMuseumDetail('Tokyo Museum')">Tokyo Museum</p>
                             <p>Jan 1 - Mar 31, 2025</p>
                         </div>
                         <div class="detail-actions">
@@ -369,6 +369,8 @@
                             </button>
                         </div>
                     </div>
+                    
+                    <button class="cta-button" onclick="showScreen('screen-date')">Book a ticket</button>
                     
                     <div class="outline-section">
                         <h3>About This Exhibition</h3>
@@ -482,7 +484,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -501,7 +504,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -519,7 +523,15 @@
                 </div>
                 
                 <div class="calendar-section">
-                    <h2>2025, 7</h2>
+                    <div class="calendar-header">
+                        <button class="month-nav-btn" onclick="goToPreviousMonth();">
+                            <span>←</span>
+                        </button>
+                        <h2 id="calendar-month-year">2025, 7</h2>
+                        <button class="month-nav-btn" onclick="goToNextMonth();">
+                            <span>→</span>
+                        </button>
+                    </div>
                     <div class="calendar">
                         <div class="weekdays">
                             <span>M</span>
@@ -566,9 +578,9 @@
                     </div>
                     
                     <div class="crowd-indicators">
-                        <span class="indicator busy">busy</span>
-                        <span class="indicator average">average</span>
-                        <span class="indicator light">light</span>
+                        <span class="crowd-indicator busy">busy</span>
+                        <span class="crowd-indicator average">average</span>
+                        <span class="crowd-indicator light">light</span>
                     </div>
                 </div>
                 
@@ -614,7 +626,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -633,7 +646,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -647,6 +661,7 @@
                         <h3>Modern Art Exhibition</h3>
                         <p>Tokyo Museum</p>
                         <p>Jan 1 - Mar 31, 2025</p>
+                        <p class="selected-date" id="time-selected-date">Selected Date: July 10, 2025</p>
                     </div>
                 </div>
                 
@@ -705,7 +720,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -724,7 +740,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -738,13 +755,17 @@
                         <h3>Modern Art Exhibition</h3>
                         <p>Tokyo Museum</p>
                         <p>Jan 1 - Mar 31, 2025</p>
+                        <p class="selected-datetime" id="ticket-selected-datetime">July 10, 2025 at 10:00</p>
                     </div>
                 </div>
                 
                 <div class="ticket-selection">
                     <h2>ticket</h2>
                     <div class="ticket-type">
-                        <span>Adult</span>
+                        <div class="ticket-info">
+                            <span>Adult</span>
+                            <span class="price">¥2,000</span>
+                        </div>
                         <div class="counter">
                             <button onclick="decrementTicket('adult')">-</button>
                             <span id="adult-count">0</span>
@@ -752,7 +773,10 @@
                         </div>
                     </div>
                     <div class="ticket-type">
-                        <span>Child</span>
+                        <div class="ticket-info">
+                            <span>Child</span>
+                            <span class="price">¥800</span>
+                        </div>
                         <div class="counter">
                             <button onclick="decrementTicket('child')">-</button>
                             <span id="child-count">0</span>
@@ -760,7 +784,10 @@
                         </div>
                     </div>
                     <div class="ticket-type">
-                        <span>Student</span>
+                        <div class="ticket-info">
+                            <span>Student</span>
+                            <span class="price">¥1,500</span>
+                        </div>
                         <div class="counter">
                             <button onclick="decrementTicket('student')">-</button>
                             <span id="student-count">0</span>
@@ -768,7 +795,10 @@
                         </div>
                     </div>
                     <div class="ticket-type">
-                        <span>Senior</span>
+                        <div class="ticket-info">
+                            <span>Senior</span>
+                            <span class="price">¥1,200</span>
+                        </div>
                         <div class="counter">
                             <button onclick="decrementTicket('senior')">-</button>
                             <span id="senior-count">0</span>
@@ -776,7 +806,10 @@
                         </div>
                     </div>
                     <div class="ticket-type">
-                        <span>Disabled</span>
+                        <div class="ticket-info">
+                            <span>Disabled</span>
+                            <span class="price">¥800</span>
+                        </div>
                         <div class="counter">
                             <button onclick="decrementTicket('disabled')">-</button>
                             <span id="disabled-count">0</span>
@@ -784,7 +817,10 @@
                         </div>
                     </div>
                     <div class="ticket-type">
-                        <span>Disabled company</span>
+                        <div class="ticket-info">
+                            <span>Disabled company</span>
+                            <span class="price">¥800</span>
+                        </div>
                         <div class="counter">
                             <button onclick="decrementTicket('disabled-company')">-</button>
                             <span id="disabled-company-count">0</span>
@@ -835,7 +871,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -854,7 +891,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -866,10 +904,20 @@
                     <div class="summary-card">
                         <div class="card-image"></div>
                         <div class="card-info">
-                            <h3>Modern Art Exhibition</h3>
-                            <p>Tokyo Museum</p>
-                            <p>July 10, 2025 at 10:00</p>
-                            <p class="ticket-info">Adult x2</p>
+                            <h3 id="summary-exhibition-title">Modern Art Exhibition</h3>
+                            <p id="summary-museum-name">Tokyo Museum</p>
+                            <p id="summary-date-time">July 10, 2025 at 10:00</p>
+                            
+                            <div class="ticket-breakdown" id="summary-ticket-breakdown">
+                                <!-- Ticket details will be inserted here dynamically -->
+                            </div>
+                            
+                            <div class="total-section">
+                                <div class="total-line">
+                                    <span class="total-label">Total:</span>
+                                    <span class="total-amount" id="summary-total-amount">¥0</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -918,7 +966,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -937,7 +986,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1028,7 +1078,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1047,7 +1098,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1061,11 +1113,20 @@
                     <div class="summary-card">
                         <div class="card-image"></div>
                         <div class="card-info">
-                            <h3>Modern Art Exhibition</h3>
-                            <p>Tokyo Museum</p>
-                            <p>July 10, 2025 at 10:00</p>
-                            <p>Adult x2</p>
-                            <p class="total">Total: ¥00.00</p>
+                            <h3 id="confirmation-exhibition-title">Modern Art Exhibition</h3>
+                            <p id="confirmation-museum-name">Tokyo Museum</p>
+                            <p id="confirmation-date-time">July 10, 2025 at 10:00</p>
+                            
+                            <div class="ticket-breakdown" id="confirmation-ticket-breakdown">
+                                <!-- Ticket details will be inserted here dynamically -->
+                            </div>
+                            
+                            <div class="total-section">
+                                <div class="total-line">
+                                    <span class="total-label">Total:</span>
+                                    <span class="total-amount" id="confirmation-total-amount">¥0</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1114,7 +1175,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1133,7 +1195,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1202,7 +1265,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1221,7 +1285,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1288,7 +1353,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1307,7 +1373,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1360,7 +1427,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1379,7 +1447,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1465,7 +1534,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1484,7 +1554,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1586,7 +1657,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1691,7 +1763,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1710,7 +1783,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1766,7 +1840,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1817,7 +1892,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1889,7 +1965,8 @@
                             </div>
                         </div>
                         <div class="dropdown-menu">
-                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                             <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                             <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
                             <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
@@ -1908,7 +1985,8 @@
                         <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
                         <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
                         <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
-                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My List</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
                         <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
                         <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
                     </div>
@@ -1926,6 +2004,209 @@
                     </div>
                 </div>
             </main>
+
+            <footer class="app-footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Screen: Museum Detail -->
+        <div class="screen" id="screen-museum-detail">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Museum</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="museum-header">
+                    <div class="museum-title-section">
+                        <h2 id="museum-name">Museum Name</h2>
+                    </div>
+                    <div class="museum-actions">
+                        <button class="action-btn museum-heart" id="museum-heart-btn" onclick="toggleMyMuseum();">
+                            🤍
+                        </button>
+                        <button class="action-btn museum-share" onclick="shareMuseum();">
+                            📤
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="museum-description" id="museum-description">Museum description</p>
+
+                <div class="info-sections">
+                    <div class="info-section">
+                        <h3>📍 Location & Contact</h3>
+                        <div class="museum-contact">
+                            <p id="museum-address">Address</p>
+                            <p id="museum-phone">Phone</p>
+                            <p id="museum-email">Email</p>
+                            <div class="map-container">
+                                <div class="map-placeholder" onclick="openMuseumMap()">
+                                    <div class="map-icon">🗺️</div>
+                                    <p>View on Google Maps</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>🕒 Opening Hours</h3>
+                        <div class="hours-list" id="museum-hours">
+                            <!-- Hours will be populated dynamically -->
+                        </div>
+                        <p class="hours-note">Last admission 30 minutes before closing</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>🎫 General Admission</h3>
+                        <div class="price-list" id="museum-admission">
+                            <!-- Admission prices will be populated dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>🏛️ Facilities</h3>
+                        <div class="facilities-list" id="museum-facilities">
+                            <!-- Facilities will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="app-footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About</a>
+                        <a href="#" onclick="showScreen('screen-help'); return false;">Help</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                    <div class="footer-info">
+                        <p>Visit Museums &copy; 2025</p>
+                        <p>Discover amazing exhibitions</p>
+                    </div>
+                    <div class="footer-contact">
+                        <p>support@visitmuseums.com</p>
+                        <p>+81 3-1234-5678</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Screen: My Museums -->
+        <div class="screen" id="screen-my-museums">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">My Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">My Exhibition List</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">My Museums</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="museums-container">
+                    <div class="museums-count" id="my-museums-count">0 museums in your list</div>
+                    <div class="museums-list" id="my-museums-list">
+                        <div class="no-results">
+                            <p>No museums added to your favorites yet.</p>
+                            <p>Visit museum pages and tap the heart icon to add them to your list.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <footer class="app-footer">
                 <div class="footer-content">

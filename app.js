@@ -29,6 +29,9 @@ let bookingData = {
 // My List (interested exhibitions) functionality
 let myList = JSON.parse(localStorage.getItem('myList')) || [];
 
+// My Museums (favorite museums) functionality
+let myMuseums = JSON.parse(localStorage.getItem('myMuseums')) || [];
+
 const ticketPrices = {
     'adult': 2000,
     'child': 800,
@@ -37,6 +40,89 @@ const ticketPrices = {
     'disabled': 800,
     'disabled-company': 800
 };
+
+// Museum data
+const museumsData = [
+    {
+        id: 1,
+        name: 'Tokyo Museum',
+        description: 'A premier cultural institution showcasing Japanese and international art',
+        address: '1-2-3 Ueno, Taito City, Tokyo 110-0007',
+        phone: '+81 3-1234-5678',
+        email: 'info@tokyomuseum.jp',
+        hours: {
+            'Tuesday - Thursday': '10:00 - 18:00',
+            'Friday - Saturday': '10:00 - 20:00',
+            'Sunday': '10:00 - 17:00',
+            'Monday': 'Closed'
+        },
+        admission: {
+            'General': '¥1,000',
+            'University Students': '¥500',
+            'High School & Below': 'Free',
+            'Seniors (65+)': '¥800'
+        },
+        facilities: [
+            'Restaurant & Café',
+            'Museum Shop',
+            'Parking Available',
+            'Wheelchair Accessible',
+            'Audio Guides',
+            'Locker Room',
+            'Free Wi-Fi'
+        ]
+    },
+    {
+        id: 2,
+        name: 'National Museum',
+        description: 'Japan\'s oldest and largest museum featuring extensive collections',
+        address: '13-9 Ueno Park, Taito City, Tokyo 110-8712',
+        phone: '+81 3-3822-1111',
+        email: 'info@nationalmuseum.jp',
+        hours: {
+            'Tuesday - Sunday': '9:30 - 17:00',
+            'Friday & Saturday': '9:30 - 20:00',
+            'Monday': 'Closed'
+        },
+        admission: {
+            'General': '¥1,000',
+            'University Students': '¥500',
+            'Under 18': 'Free',
+            'Seniors (70+)': 'Free'
+        },
+        facilities: [
+            'Multiple Restaurants',
+            'Gift Shop',
+            'Parking',
+            'Barrier-Free Access',
+            'Guided Tours',
+            'Research Library'
+        ]
+    },
+    {
+        id: 3,
+        name: 'Art Gallery',
+        description: 'Contemporary art space featuring rotating exhibitions',
+        address: '3-1-1 Roppongi, Minato City, Tokyo 106-0032',
+        phone: '+81 3-5777-8600',
+        email: 'contact@artgallery.jp',
+        hours: {
+            'Wednesday - Monday': '10:00 - 18:00',
+            'Tuesday': 'Closed'
+        },
+        admission: {
+            'General': '¥1,800',
+            'Students': '¥800',
+            'Children': '¥600'
+        },
+        facilities: [
+            'Café',
+            'Art Shop',
+            'Event Space',
+            'Accessible Facilities'
+        ]
+    }
+];
 
 // Fixed popular exhibitions (always shown at top)
 const popularExhibitions = [
@@ -320,6 +406,30 @@ function showScreen(screenId, addToHistory = true) {
             initCarouselTouch();
         }, 100);
     }
+    
+    if (screenId === 'screen-summary') {
+        updateOrderSummary();
+    }
+    
+    if (screenId === 'screen-confirmation') {
+        updateConfirmationPage();
+    }
+    
+    if (screenId === 'screen-time') {
+        updateTimePageDate();
+    }
+    
+    if (screenId === 'screen-tickets') {
+        updateTicketPageDateTime();
+    }
+    
+    if (screenId === 'screen-museum-detail') {
+        updateMuseumDetailPage();
+    }
+    
+    if (screenId === 'screen-my-museums') {
+        renderMyMuseums();
+    }
 }
 
 function goBack() {
@@ -502,6 +612,90 @@ function processPayment() {
     }, 1000);
 }
 
+function updateOrderSummary() {
+    // Update exhibition details
+    document.getElementById('summary-exhibition-title').textContent = bookingData.exhibition;
+    document.getElementById('summary-museum-name').textContent = bookingData.museum;
+    document.getElementById('summary-date-time').textContent = `${bookingData.date} at ${bookingData.time}`;
+    
+    // Update ticket breakdown
+    const ticketBreakdown = document.getElementById('summary-ticket-breakdown');
+    ticketBreakdown.innerHTML = '';
+    
+    const ticketTypeNames = {
+        'adult': 'Adult',
+        'child': 'Child',
+        'student': 'Student',
+        'senior': 'Senior',
+        'disabled': 'Disabled',
+        'disabled-company': 'Disabled company'
+    };
+    
+    for (const [type, count] of Object.entries(bookingData.tickets)) {
+        if (count > 0) {
+            const ticketLine = document.createElement('div');
+            ticketLine.className = 'ticket-line';
+            ticketLine.innerHTML = `
+                <span>${ticketTypeNames[type]} x${count}</span>
+                <span>¥${(count * ticketPrices[type]).toLocaleString()}</span>
+            `;
+            ticketBreakdown.appendChild(ticketLine);
+        }
+    }
+    
+    // Update total
+    document.getElementById('summary-total-amount').textContent = `¥${bookingData.totalPrice.toLocaleString()}`;
+}
+
+function updateConfirmationPage() {
+    // Update exhibition details
+    document.getElementById('confirmation-exhibition-title').textContent = bookingData.exhibition;
+    document.getElementById('confirmation-museum-name').textContent = bookingData.museum;
+    document.getElementById('confirmation-date-time').textContent = `${bookingData.date} at ${bookingData.time}`;
+    
+    // Update ticket breakdown
+    const ticketBreakdown = document.getElementById('confirmation-ticket-breakdown');
+    ticketBreakdown.innerHTML = '';
+    
+    const ticketTypeNames = {
+        'adult': 'Adult',
+        'child': 'Child',
+        'student': 'Student',
+        'senior': 'Senior',
+        'disabled': 'Disabled',
+        'disabled-company': 'Disabled company'
+    };
+    
+    for (const [type, count] of Object.entries(bookingData.tickets)) {
+        if (count > 0) {
+            const ticketLine = document.createElement('div');
+            ticketLine.className = 'ticket-line';
+            ticketLine.innerHTML = `
+                <span>${ticketTypeNames[type]} x${count}</span>
+                <span>¥${(count * ticketPrices[type]).toLocaleString()}</span>
+            `;
+            ticketBreakdown.appendChild(ticketLine);
+        }
+    }
+    
+    // Update total
+    document.getElementById('confirmation-total-amount').textContent = `¥${bookingData.totalPrice.toLocaleString()}`;
+}
+
+function updateTimePageDate() {
+    const dateElement = document.getElementById('time-selected-date');
+    if (dateElement && bookingData.date) {
+        dateElement.textContent = `Selected Date: ${bookingData.date}`;
+    }
+}
+
+function updateTicketPageDateTime() {
+    const datetimeElement = document.getElementById('ticket-selected-datetime');
+    if (datetimeElement && bookingData.date && bookingData.time) {
+        datetimeElement.textContent = `${bookingData.date} at ${bookingData.time}`;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize exhibitions display
     renderExhibitions();
@@ -527,7 +721,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add click listeners for calendar dates
     document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('dates') && event.target.tagName === 'SPAN') {
+        if (event.target.parentElement && event.target.parentElement.classList.contains('dates') && event.target.tagName === 'SPAN') {
             // Remove previous selection
             document.querySelectorAll('.dates span').forEach(span => {
                 span.classList.remove('selected');
@@ -1437,7 +1631,271 @@ function handleSwipe() {
     }
 }
 
+// Calendar functionality
+let currentCalendarMonth = 7; // July (1-based)
+let currentCalendarYear = 2025;
+
+function goToNextMonth() {
+    currentCalendarMonth++;
+    if (currentCalendarMonth > 12) {
+        currentCalendarMonth = 1;
+        currentCalendarYear++;
+    }
+    updateCalendarDisplay();
+}
+
+function goToPreviousMonth() {
+    currentCalendarMonth--;
+    if (currentCalendarMonth < 1) {
+        currentCalendarMonth = 12;
+        currentCalendarYear--;
+    }
+    updateCalendarDisplay();
+}
+
+function updateCalendarDisplay() {
+    const monthYearElement = document.getElementById('calendar-month-year');
+    if (monthYearElement) {
+        monthYearElement.textContent = `${currentCalendarYear}, ${currentCalendarMonth}`;
+    }
+}
+
 // Initialize carousel touch support when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initCarouselTouch();
 });
+
+// Museum functionality
+let currentMuseumId = null;
+
+function showMuseumDetail(museumName) {
+    const museum = museumsData.find(m => m.name === museumName);
+    if (museum) {
+        currentMuseumId = museum.id;
+        showScreen('screen-museum-detail');
+    }
+}
+
+function updateMuseumDetailPage() {
+    if (!currentMuseumId) return;
+    
+    const museum = museumsData.find(m => m.id === currentMuseumId);
+    if (!museum) return;
+    
+    // Update museum name and description
+    document.getElementById('museum-name').textContent = museum.name;
+    document.getElementById('museum-description').textContent = museum.description;
+    
+    // Update contact info
+    document.getElementById('museum-address').textContent = museum.address;
+    document.getElementById('museum-phone').textContent = museum.phone;
+    document.getElementById('museum-email').textContent = museum.email;
+    
+    // Update hours
+    const hoursContainer = document.getElementById('museum-hours');
+    hoursContainer.innerHTML = '';
+    for (const [day, hours] of Object.entries(museum.hours)) {
+        const hoursItem = document.createElement('div');
+        hoursItem.className = hours === 'Closed' ? 'hours-item closed' : 'hours-item';
+        hoursItem.innerHTML = `
+            <span class="day-label">${day}</span>
+            <span class="time-value">${hours}</span>
+        `;
+        hoursContainer.appendChild(hoursItem);
+    }
+    
+    // Update admission prices
+    const admissionContainer = document.getElementById('museum-admission');
+    admissionContainer.innerHTML = '';
+    for (const [type, price] of Object.entries(museum.admission)) {
+        const priceItem = document.createElement('div');
+        priceItem.className = 'price-item';
+        priceItem.innerHTML = `
+            <span class="price-label">${type}</span>
+            <span class="price-value">${price}</span>
+        `;
+        admissionContainer.appendChild(priceItem);
+    }
+    
+    // Update facilities
+    const facilitiesContainer = document.getElementById('museum-facilities');
+    facilitiesContainer.innerHTML = '';
+    museum.facilities.forEach(facility => {
+        const facilityItem = document.createElement('div');
+        facilityItem.className = 'facility-item';
+        facilityItem.innerHTML = `<span>✓ ${facility}</span>`;
+        facilitiesContainer.appendChild(facilityItem);
+    });
+    
+    // Update heart button
+    updateMuseumHeartButton();
+}
+
+function toggleMyMuseum() {
+    if (!currentMuseumId) return;
+    
+    if (myMuseums.includes(currentMuseumId)) {
+        removeFromMyMuseums(currentMuseumId);
+    } else {
+        addToMyMuseums(currentMuseumId);
+    }
+}
+
+function addToMyMuseums(museumId) {
+    if (!myMuseums.includes(museumId)) {
+        myMuseums.push(museumId);
+        localStorage.setItem('myMuseums', JSON.stringify(myMuseums));
+        updateMuseumHeartButton();
+    }
+}
+
+function removeFromMyMuseums(museumId) {
+    const index = myMuseums.indexOf(museumId);
+    if (index > -1) {
+        myMuseums.splice(index, 1);
+        localStorage.setItem('myMuseums', JSON.stringify(myMuseums));
+        updateMuseumHeartButton();
+        
+        // Update My Museums page if currently visible
+        if (currentScreen === 'screen-my-museums') {
+            renderMyMuseums();
+        }
+    }
+}
+
+function updateMuseumHeartButton() {
+    const heartBtn = document.getElementById('museum-heart-btn');
+    if (heartBtn && currentMuseumId) {
+        if (myMuseums.includes(currentMuseumId)) {
+            heartBtn.classList.add('active');
+            heartBtn.textContent = '❤️';
+        } else {
+            heartBtn.classList.remove('active');
+            heartBtn.textContent = '🤍';
+        }
+    }
+}
+
+function renderMyMuseums() {
+    const count = document.getElementById('my-museums-count');
+    const list = document.getElementById('my-museums-list');
+    
+    if (!count || !list) return;
+    
+    const favoriteMuseums = museumsData.filter(m => myMuseums.includes(m.id));
+    
+    if (favoriteMuseums.length === 0) {
+        count.textContent = '0 museums in your list';
+        list.innerHTML = `
+            <div class="no-results">
+                <p>No museums added to your favorites yet.</p>
+                <p>Visit museum pages and tap the heart icon to add them to your list.</p>
+            </div>
+        `;
+    } else {
+        count.textContent = `${favoriteMuseums.length} museums in your list`;
+        list.innerHTML = favoriteMuseums.map(museum => `
+            <div class="museum-item" onclick="showMuseumDetail('${museum.name}')">
+                <div class="museum-item-info">
+                    <h3>${museum.name}</h3>
+                    <p>${museum.address}</p>
+                </div>
+                <button class="heart-btn active" 
+                        onclick="event.stopPropagation(); currentMuseumId = ${museum.id}; toggleMyMuseum();">
+                    ❤️
+                </button>
+            </div>
+        `).join('');
+    }
+}
+
+function shareMuseum() {
+    if (!currentMuseumId) return;
+    
+    const museum = museumsData.find(m => m.id === currentMuseumId);
+    if (!museum) return;
+    
+    const shareData = {
+        title: museum.name,
+        text: `Check out ${museum.name} - ${museum.description}`,
+        url: window.location.href
+    };
+    
+    // Check if Web Share API is supported
+    if (navigator.share) {
+        navigator.share(shareData)
+            .then(() => console.log('Museum shared successfully'))
+            .catch((error) => console.log('Error sharing museum:', error));
+    } else {
+        // Fallback for browsers that don't support Web Share API
+        const shareText = `${shareData.text}\n${shareData.url}`;
+        
+        // Try to copy to clipboard
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(shareText)
+                .then(() => {
+                    alert('Museum details copied to clipboard!');
+                })
+                .catch(() => {
+                    fallbackShareMuseum(shareText);
+                });
+        } else {
+            fallbackShareMuseum(shareText);
+        }
+    }
+}
+
+function fallbackShareMuseum(text) {
+    // Create a temporary text area to copy text
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('Museum details copied to clipboard!');
+    } catch (err) {
+        // If all else fails, show a simple dialog
+        prompt('Copy this text to share:', text);
+    } finally {
+        document.body.removeChild(textArea);
+    }
+}
+
+function openMuseumMap() {
+    if (!currentMuseumId) return;
+    
+    const museum = museumsData.find(m => m.id === currentMuseumId);
+    if (!museum) return;
+    
+    // For demo purposes, using example coordinates
+    const coordinates = {
+        'Tokyo Museum': { lat: 35.7187, lng: 139.7776 },
+        'National Museum': { lat: 35.7188, lng: 139.7754 },
+        'Art Gallery': { lat: 35.6654, lng: 139.7297 }
+    };
+    
+    const coords = coordinates[museum.name] || { lat: 35.6762, lng: 139.6503 };
+    const address = encodeURIComponent(museum.address);
+    
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        const mapsAppUrl = `comgooglemaps://?q=${coords.lat},${coords.lng}&center=${coords.lat},${coords.lng}&zoom=16`;
+        const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+        
+        window.location.href = mapsAppUrl;
+        
+        setTimeout(() => {
+            window.open(webUrl, '_blank');
+        }, 500);
+    } else {
+        const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+        window.open(webUrl, '_blank');
+    }
+}
