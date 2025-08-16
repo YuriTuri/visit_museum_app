@@ -32,6 +32,188 @@ let myList = JSON.parse(localStorage.getItem('myList')) || [];
 // My Museums (favorite museums) functionality
 let myMuseums = JSON.parse(localStorage.getItem('myMuseums')) || [];
 
+// Language settings
+let currentLanguage = localStorage.getItem('language') || 'en';
+
+// Translations
+const translations = {
+    en: {
+        // Navigation
+        'nav.top': 'Top',
+        'nav.allExhibitions': 'All Exhibitions',
+        'nav.popularExhibitions': 'Popular Exhibitions',
+        'nav.myExhibitions': 'My Exhibitions',
+        'nav.myMuseums': 'My Museums',
+        'nav.myTickets': 'My Tickets',
+        'nav.about': 'About Visit Museums',
+        'nav.settings': 'Settings',
+        'nav.help': 'Help & FAQ',
+        'nav.logout': 'Logout',
+        
+        // Home page
+        'home.popularExhibitions': 'Popular Exhibitions',
+        'home.allExhibitions': 'All Exhibitions',
+        'home.search': 'Search exhibitions...',
+        'home.filter': 'Filter',
+        'home.all': 'All',
+        'home.currentlyOpen': 'Currently Open',
+        'home.openingSoon': 'Opening Soon',
+        'home.lastChance': 'Last Chance',
+        'home.free': 'Free',
+        'home.viewAll': 'View All',
+        
+        // Exhibition details
+        'exhibition.bookTicket': 'Book a ticket',
+        'exhibition.about': 'About This Exhibition',
+        'exhibition.highlights': 'Exhibition Highlights',
+        'exhibition.ticketInfo': 'Ticket Information',
+        'exhibition.hours': 'Operating Hours',
+        'exhibition.location': 'Location',
+        'exhibition.share': 'Share',
+        
+        // Date selection
+        'date.selectDate': 'Select a Date',
+        'date.exhibition': 'Exhibition',
+        'date.museum': 'Museum',
+        'date.busy': 'busy',
+        'date.average': 'average',
+        'date.light': 'light',
+        'date.soldOut': 'SOLD OUT',
+        'date.continue': 'Continue',
+        
+        // Time selection
+        'time.selectTime': 'Select a Time',
+        'time.selectedDate': 'Selected Date',
+        'time.morning': 'Morning',
+        'time.afternoon': 'Afternoon',
+        'time.evening': 'Evening',
+        
+        // Ticket selection
+        'ticket.selectTickets': 'Select Tickets',
+        'ticket.adult': 'Adult',
+        'ticket.child': 'Child',
+        'ticket.student': 'Student',
+        'ticket.senior': 'Senior',
+        'ticket.disabled': 'Disabled',
+        'ticket.disabledCompany': 'Disabled company',
+        'ticket.total': 'Total',
+        'ticket.continue': 'Continue',
+        
+        // Museum details
+        'museum.about': 'About This Museum',
+        'museum.contactInfo': 'Contact Information',
+        'museum.hours': 'Opening Hours',
+        'museum.admission': 'Admission Prices',
+        'museum.facilities': 'Facilities',
+        'museum.viewOnMap': 'View on Google Maps',
+        'museum.closed': 'Closed'
+    },
+    ja: {
+        // Navigation
+        'nav.top': 'トップ',
+        'nav.allExhibitions': 'すべての展覧会',
+        'nav.popularExhibitions': '人気の展覧会',
+        'nav.myExhibitions': 'マイ展覧会',
+        'nav.myMuseums': 'マイミュージアム',
+        'nav.myTickets': 'マイチケット',
+        'nav.about': 'Visit Museumsについて',
+        'nav.settings': '設定',
+        'nav.help': 'ヘルプ・FAQ',
+        'nav.logout': 'ログアウト',
+        
+        // Home page
+        'home.popularExhibitions': '人気の展覧会',
+        'home.allExhibitions': 'すべての展覧会',
+        'home.search': '展覧会を検索...',
+        'home.filter': 'フィルター',
+        'home.all': 'すべて',
+        'home.currentlyOpen': '開催中',
+        'home.openingSoon': '開催予定',
+        'home.lastChance': '最終チャンス',
+        'home.free': '無料',
+        'home.viewAll': 'すべて見る',
+        
+        // Exhibition details
+        'exhibition.bookTicket': 'チケットを予約',
+        'exhibition.about': 'この展覧会について',
+        'exhibition.highlights': '展覧会のハイライト',
+        'exhibition.ticketInfo': 'チケット情報',
+        'exhibition.hours': '開館時間',
+        'exhibition.location': '場所',
+        'exhibition.share': 'シェア',
+        
+        // Date selection
+        'date.selectDate': '日付を選択',
+        'date.exhibition': '展覧会',
+        'date.museum': 'ミュージアム',
+        'date.busy': '混雑',
+        'date.average': '普通',
+        'date.light': '空き',
+        'date.soldOut': '売り切れ',
+        'date.continue': '次へ',
+        
+        // Time selection
+        'time.selectTime': '時間を選択',
+        'time.selectedDate': '選択した日付',
+        'time.morning': '午前',
+        'time.afternoon': '午後',
+        'time.evening': '夕方',
+        
+        // Ticket selection
+        'ticket.selectTickets': 'チケットを選択',
+        'ticket.adult': '大人',
+        'ticket.child': '子供',
+        'ticket.student': '学生',
+        'ticket.senior': 'シニア',
+        'ticket.disabled': '障害者',
+        'ticket.disabledCompany': '障害者付添',
+        'ticket.total': '合計',
+        'ticket.continue': '次へ',
+        
+        // Museum details
+        'museum.about': 'このミュージアムについて',
+        'museum.contactInfo': '連絡先',
+        'museum.hours': '開館時間',
+        'museum.admission': '入館料',
+        'museum.facilities': '施設',
+        'museum.viewOnMap': 'Googleマップで見る',
+        'museum.closed': '休館'
+    }
+};
+
+// Translation function
+function t(key) {
+    return translations[currentLanguage][key] || translations['en'][key] || key;
+}
+
+// Toggle language
+function toggleLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'ja' : 'en';
+    localStorage.setItem('language', currentLanguage);
+    updateLanguageDisplay();
+}
+
+// Update all text elements with translations
+function updateLanguageDisplay() {
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        element.textContent = t(key);
+    });
+    
+    // Update placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        element.placeholder = t(key);
+    });
+    
+    // Update language toggle button
+    const langButton = document.getElementById('language-toggle');
+    if (langButton) {
+        langButton.textContent = currentLanguage === 'en' ? '日本語' : 'English';
+    }
+}
+
 const ticketPrices = {
     'adult': 2000,
     'child': 800,
@@ -697,6 +879,9 @@ function updateTicketPageDateTime() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize language display
+    updateLanguageDisplay();
+    
     // Initialize exhibitions display
     renderExhibitions();
     
