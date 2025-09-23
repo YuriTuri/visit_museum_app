@@ -415,7 +415,10 @@ function showScreen(screenId, addToHistory = true) {
         updateConfirmationPage();
     }
     
-    if (screenId === 'screen-time') {
+    if (screenId === 'screen-date') {
+        calendar_current_date = new Date();
+        calendar_displayed_month = new Date(calendar_current_date.getFullYear(), calendar_current_date.getMonth(), 1);
+        updateCalendarDisplay();
         updateTimePageDate();
     }
     
@@ -541,9 +544,106 @@ function selectTime(timeSlot) {
     bookingData.time = selectedTime;
 }
 
-function selectDate(date) {
-    selectedDate = date;
-    bookingData.date = `July ${date}, 2025`;
+// Calendar functionality
+let calendar_current_date = new Date();
+let calendar_displayed_month = new Date(calendar_current_date.getFullYear(), calendar_current_date.getMonth(), 1);
+
+function renderCalendar(year, month) {
+    const weekdaysContainer = document.querySelector('#screen-date .weekdays');
+    const datesContainer = document.querySelector('#screen-date .dates');
+    const monthYearElement = document.getElementById('calendar-month-year');
+
+    // Clear previous content
+    if(!weekdaysContainer || !datesContainer || !monthYearElement) return;
+    weekdaysContainer.innerHTML = '';
+    datesContainer.innerHTML = '';
+
+    // Set month and year text
+    monthYearElement.textContent = `${year}, ${month + 1}`;
+
+    // Render weekdays
+    const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    weekdays.forEach(day => {
+        const dayElement = document.createElement('span');
+        dayElement.textContent = day;
+        weekdaysContainer.appendChild(dayElement);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Add empty cells for days before the first day of the month
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('span');
+        datesContainer.appendChild(emptyCell);
+    }
+
+    // Add date cells
+    for (let i = 1; i <= daysInMonth; i++) {
+        const dateCell = document.createElement('span');
+        dateCell.textContent = i;
+
+        const today = new Date();
+        if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+            dateCell.classList.add('selected');
+            selectDate(i);
+        }
+
+        // Disable past dates
+        const today_start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        if (new Date(year, month, i) < today_start) {
+            dateCell.classList.add('disabled');
+        } else {
+            dateCell.onclick = () => {
+                document.querySelectorAll('#screen-date .dates span.selected').forEach(span => {
+                    span.classList.remove('selected');
+                });
+                dateCell.classList.add('selected');
+                selectDate(i);
+            };
+        }
+        datesContainer.appendChild(dateCell);
+    }
+    
+    // Disable/Enable nav buttons
+    const prevBtn = document.querySelector('#screen-date .month-nav-btn:first-child');
+    const nextBtn = document.querySelector('#screen-date .month-nav-btn:last-child');
+
+    const currentMonth = new Date(calendar_current_date.getFullYear(), calendar_current_date.getMonth());
+    const nextMonth = new Date(calendar_current_date.getFullYear(), calendar_current_date.getMonth() + 2);
+
+    if (new Date(year, month) <= currentMonth) {
+        prevBtn.disabled = true;
+    } else {
+        prevBtn.disabled = false;
+    }
+
+    if (new Date(year, month) >= nextMonth) {
+        nextBtn.disabled = true;
+    } else {
+        nextBtn.disabled = false;
+    }
+}
+
+function goToNextMonth() {
+    calendar_displayed_month.setMonth(calendar_displayed_month.getMonth() + 1);
+    renderCalendar(calendar_displayed_month.getFullYear(), calendar_displayed_month.getMonth());
+}
+
+function goToPreviousMonth() {
+    calendar_displayed_month.setMonth(calendar_displayed_month.getMonth() - 1);
+    renderCalendar(calendar_displayed_month.getFullYear(), calendar_displayed_month.getMonth());
+}
+
+function updateCalendarDisplay() {
+    renderCalendar(calendar_displayed_month.getFullYear(), calendar_displayed_month.getMonth());
+}
+
+function selectDate(day) {
+    const year = calendar_displayed_month.getFullYear();
+    const month = calendar_displayed_month.getMonth();
+    selectedDate = new Date(year, month, day);
+    bookingData.date = selectedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 function generateQRCodes() {
@@ -718,20 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
             allMenus.forEach(menu => menu.classList.remove('active'));
         }
     });
-    
-    // Add click listeners for calendar dates
-    document.addEventListener('click', function(event) {
-        if (event.target.parentElement && event.target.parentElement.classList.contains('dates') && event.target.tagName === 'SPAN') {
-            // Remove previous selection
-            document.querySelectorAll('.dates span').forEach(span => {
-                span.classList.remove('selected');
-            });
-            
-            // Add selection to clicked date
-            event.target.classList.add('selected');
-            selectDate(event.target.textContent);
-        }
-    });
+    initCarouselTouch();
 });
 
 // Search functionality
@@ -1631,35 +1718,6 @@ function handleSwipe() {
     }
 }
 
-// Calendar functionality
-let currentCalendarMonth = 7; // July (1-based)
-let currentCalendarYear = 2025;
-
-function goToNextMonth() {
-    currentCalendarMonth++;
-    if (currentCalendarMonth > 12) {
-        currentCalendarMonth = 1;
-        currentCalendarYear++;
-    }
-    updateCalendarDisplay();
-}
-
-function goToPreviousMonth() {
-    currentCalendarMonth--;
-    if (currentCalendarMonth < 1) {
-        currentCalendarMonth = 12;
-        currentCalendarYear--;
-    }
-    updateCalendarDisplay();
-}
-
-function updateCalendarDisplay() {
-    const monthYearElement = document.getElementById('calendar-month-year');
-    if (monthYearElement) {
-        monthYearElement.textContent = `${currentCalendarYear}, ${currentCalendarMonth}`;
-    }
-}
-
 // Initialize carousel touch support when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initCarouselTouch();
@@ -1886,8 +1944,8 @@ function openMuseumMap() {
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (isMobile) {
-        const mapsAppUrl = `comgooglemaps://?q=${coords.lat},${coords.lng}&center=${coords.lat},${coords.lng}&zoom=16`;
-        const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+        const mapsAppUrl = `comgooglemaps://?q=${coords.lat},${lng}&center=${coords.lat},${lng}&zoom=16`;
+        const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${lng}`;
         
         window.location.href = mapsAppUrl;
         
@@ -1895,7 +1953,7 @@ function openMuseumMap() {
             window.open(webUrl, '_blank');
         }, 500);
     } else {
-        const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+        const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${lng}`;
         window.open(webUrl, '_blank');
     }
 }
