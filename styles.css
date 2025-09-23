@@ -2203,3 +2203,45 @@ input[type="checkbox"]:checked + .toggle::after {
     font-size: 14px;
     color: #666;
 }
+
+/* PC view header fix */
+@media (min-width: 769px) {
+    .app-header {
+        position: relative;
+        padding: 10px 20px;
+    }
+
+    .app-header .app-title {
+        position: static;
+        transform: none;
+        margin: 0 auto;
+        text-align: center;
+        max-width: calc(100% - 200px); /* 100px on each side for icons */
+    }
+
+    .app-header .profile-section {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 0;
+    }
+
+    .app-header .back-arrow {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .app-header .back-arrow + .profile-section {
+        left: 70px; /* Position next to back arrow */
+    }
+
+    .app-header .menu-section {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
