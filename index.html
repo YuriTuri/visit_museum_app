@@ -723,7 +723,7 @@
                     <h2>ticket</h2>
                     <div class="ticket-type">
                         <div class="ticket-info">
-                            <span>Adult</span>
+                            <span>Adult<span class="ticket-description">(over 18 years old)</span></span>
                             <span class="price">¥2,000</span>
                         </div>
                         <div class="counter">
@@ -734,7 +734,7 @@
                     </div>
                     <div class="ticket-type">
                         <div class="ticket-info">
-                            <span>Child</span>
+                            <span>Child<span class="ticket-description">(over 6 years old to 18 years old)</span></span>
                             <span class="price">¥800</span>
                         </div>
                         <div class="counter">
@@ -756,7 +756,7 @@
                     </div>
                     <div class="ticket-type">
                         <div class="ticket-info">
-                            <span>Senior</span>
+                            <span>Senior<span class="ticket-description">(over 65 years old)</span></span>
                             <span class="price">¥1,200</span>
                         </div>
                         <div class="counter">
@@ -960,19 +960,19 @@
                 <div class="payment-form">
                     <div class="payment-methods">
                         <label class="payment-option">
-                            <input type="radio" name="payment" value="credit" checked>
+                            <input type="radio" name="payment" value="credit" checked onchange="updatePaymentForm()">
                             <span>Credit Card</span>
                         </label>
                         <label class="payment-option">
-                            <input type="radio" name="payment" value="apple">
+                            <input type="radio" name="payment" value="apple" onchange="updatePaymentForm()">
                             <span>Apple Pay</span>
                         </label>
                         <label class="payment-option">
-                            <input type="radio" name="payment" value="google">
+                            <input type="radio" name="payment" value="google" onchange="updatePaymentForm()">
                             <span>Google Pay</span>
                         </label>
                         <label class="payment-option">
-                            <input type="radio" name="payment" value="paypal">
+                            <input type="radio" name="payment" value="paypal" onchange="updatePaymentForm()">
                             <span>PayPal</span>
                         </label>
                     </div>

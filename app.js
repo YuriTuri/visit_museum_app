@@ -433,6 +433,10 @@ function showScreen(screenId, addToHistory = true) {
     if (screenId === 'screen-my-museums') {
         renderMyMuseums();
     }
+
+    if (screenId === 'screen-payment') {
+        updatePaymentForm();
+    }
 }
 
 function goBack() {
@@ -644,6 +648,7 @@ function selectDate(day) {
     const month = calendar_displayed_month.getMonth();
     selectedDate = new Date(year, month, day);
     bookingData.date = selectedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    updateTimePageDate();
 }
 
 function generateQRCodes() {
@@ -1955,5 +1960,16 @@ function openMuseumMap() {
     } else {
         const webUrl = `https://www.google.com/maps/search/?api=1&query=${coords.lat},${lng}`;
         window.open(webUrl, '_blank');
+    }
+}
+
+function updatePaymentForm() {
+    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    const cardForm = document.getElementById('card-form');
+
+    if (paymentMethod === 'credit') {
+        cardForm.style.display = 'block';
+    } else {
+        cardForm.style.display = 'none';
     }
 }
