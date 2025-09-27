@@ -662,17 +662,17 @@ body {
     font-weight: 500;
 }
 
-.tag-open-now {
+.tag-now-showing {
     background-color: #6bcf7f;
     color: white;
 }
 
-.tag-open-soon {
+.tag-coming-soon {
     background-color: #ffd93d;
     color: #333;
 }
 
-.tag-close-soon {
+.tag-ending-soon {
     background-color: #ff6b6b;
     color: white;
 }

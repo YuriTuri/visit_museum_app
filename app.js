@@ -320,16 +320,16 @@ function updateExhibitionStatus(exhibitions) {
     
     return exhibitions.map(exhibition => {
         const exhibit = {...exhibition};
-        const tags = exhibit.tags.filter(tag => !['open now', 'open soon', 'close soon'].includes(tag));
+        const tags = exhibit.tags.filter(tag => !['Now Showing', 'Coming Soon', 'Ending Soon'].includes(tag));
         
         if (exhibit.startDate <= today && exhibit.endDate >= today) {
             if (exhibit.endDate <= sevenDaysFromNow) {
-                tags.push('close soon');
+                tags.push('Ending Soon');
             } else {
-                tags.push('open now');
+                tags.push('Now Showing');
             }
         } else if (exhibit.startDate > today && exhibit.startDate <= thirtyDaysFromNow) {
-            tags.push('open soon');
+            tags.push('Coming Soon');
         }
         
         exhibit.tags = tags;
@@ -904,9 +904,9 @@ function generateExhibitionCards(exhibitions) {
             <div class="tags">
                 ${exhibition.tags.map(tag => {
                     let className = 'tag';
-                    if (tag === 'open now') className += ' tag-open-now';
-                    else if (tag === 'open soon') className += ' tag-open-soon';
-                    else if (tag === 'close soon') className += ' tag-close-soon';
+                    if (tag === 'Now Showing') className += ' tag-now-showing';
+                    else if (tag === 'Coming Soon') className += ' tag-coming-soon';
+                    else if (tag === 'Ending Soon') className += ' tag-ending-soon';
                     return `<span class="${className}">${tag}</span>`;
                 }).join('')}
             </div>
@@ -931,9 +931,9 @@ function generateSearchExhibitionItems(exhibitions) {
                 <div class="tags">
                     ${exhibition.tags.map(tag => {
                         let className = 'tag';
-                        if (tag === 'open now') className += ' tag-open-now';
-                        else if (tag === 'open soon') className += ' tag-open-soon';
-                        else if (tag === 'close soon') className += ' tag-close-soon';
+                        if (tag === 'Now Showing') className += ' tag-now-showing';
+                        else if (tag === 'Coming Soon') className += ' tag-coming-soon';
+                        else if (tag === 'Ending Soon') className += ' tag-ending-soon';
                         return `<span class="${className}">${tag}</span>`;
                     }).join('')}
                 </div>
