@@ -320,7 +320,8 @@ function updateExhibitionStatus(exhibitions) {
     
     return exhibitions.map(exhibition => {
         const exhibit = {...exhibition};
-        const tags = exhibit.tags.filter(tag => !['Now Showing', 'Coming Soon', 'Ending Soon'].includes(tag));
+        // Filter out old status tags before adding new ones
+        const tags = exhibit.tags.filter(tag => !['open now', 'open soon', 'close soon'].includes(tag));
         
         if (exhibit.startDate <= today && exhibit.endDate >= today) {
             if (exhibit.endDate <= sevenDaysFromNow) {
