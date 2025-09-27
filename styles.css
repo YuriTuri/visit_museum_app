@@ -983,111 +983,31 @@ body {
     color: white;
 }
 
-.dates span.crowd-busy {
-    border: 2px solid #ff6b6b;
-}
-
-.dates span.crowd-busy::after {
-    content: '';
+.dates span.available::after {
+    content: '●';
     position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 3px;
-    background-color: #ff6b6b;
-    border-radius: 2px;
+    bottom: -5px;
+    font-size: 12px;
+    color: #6bcf7f;
 }
 
-.dates span.crowd-average {
-    border: 2px solid #ffd93d;
-}
-
-.dates span.crowd-average::after {
-    content: '';
+.dates span.busy::after {
+    content: '▲';
     position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 3px;
-    background-color: #ffd93d;
-    border-radius: 2px;
+    bottom: -5px;
+    font-size: 12px;
+    color: #ffd93d;
 }
 
-.dates span.crowd-light {
-    border: 2px solid #6bcf7f;
-}
-
-.dates span.crowd-light::after {
-    content: '';
+.dates span.full::after {
+    content: '×';
     position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 3px;
-    background-color: #6bcf7f;
-    border-radius: 2px;
+    bottom: -5px;
+    font-size: 12px;
+    color: #ff6b6b;
 }
 
-.dates span.selected.crowd-busy {
-    background-color: #ff6b6b;
-    color: white;
-    border-color: #ff6b6b;
-}
 
-.dates span.selected.crowd-average {
-    background-color: #ffd93d;
-    color: #333;
-    border-color: #ffd93d;
-}
-
-.dates span.selected.crowd-light {
-    background-color: #6bcf7f;
-    color: white;
-    border-color: #6bcf7f;
-}
-
-.crowd-indicators {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    flex-wrap: nowrap;
-    padding: 0 10px;
-}
-
-.crowd-indicator {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    display: inline-block;
-    white-space: nowrap;
-    text-transform: capitalize;
-    letter-spacing: 0.3px;
-}
-
-.crowd-indicator.busy {
-    background-color: #ffebee;
-    color: #d32f2f;
-    border: 2px solid #ff6b6b;
-}
-
-.crowd-indicator.average {
-    background-color: #fff8e1;
-    color: #f57c00;
-    border: 2px solid #ffd93d;
-}
-
-.crowd-indicator.light {
-    background-color: #e8f5e9;
-    color: #388e3c;
-    border: 2px solid #6bcf7f;
-}
 
 .time-slots {
     margin-top: 20px;

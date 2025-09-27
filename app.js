@@ -598,6 +598,11 @@ function renderCalendar(year, month) {
         if (new Date(year, month, i) < today_start) {
             dateCell.classList.add('disabled');
         } else {
+            // Add crowdness indicator
+            const crowdLevels = ['available', 'busy', 'full'];
+            const crowdness = crowdLevels[Math.floor(Math.random() * crowdLevels.length)];
+            dateCell.classList.add(crowdness);
+
             dateCell.onclick = () => {
                 document.querySelectorAll('#screen-date .dates span.selected').forEach(span => {
                     span.classList.remove('selected');
