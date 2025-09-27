@@ -26,11 +26,11 @@ let bookingData = {
     totalPrice: 0
 };
 
-// My List (interested exhibitions) functionality
-let myList = JSON.parse(localStorage.getItem('myList')) || [];
+// Liked Exhibitions (interested exhibitions) functionality
+let likedExhibitions = JSON.parse(localStorage.getItem('likedExhibitions')) || [];
 
-// My Museums (favorite museums) functionality
-let myMuseums = JSON.parse(localStorage.getItem('myMuseums')) || [];
+// Liked Museums (favorite museums) functionality
+let likedMuseums = JSON.parse(localStorage.getItem('likedMuseums')) || [];
 
 const ticketPrices = {
     'adult': 2000,
@@ -387,8 +387,8 @@ function showScreen(screenId, addToHistory = true) {
         renderPopularExhibitions();
     }
     
-    if (screenId === 'screen-my-list') {
-        renderMyList();
+    if (screenId === 'screen-liked-exhibitions') {
+        renderLikedExhibitions();
     }
     
     if (screenId === 'screen-ticket-detail') {
@@ -430,8 +430,8 @@ function showScreen(screenId, addToHistory = true) {
         updateMuseumDetailPage();
     }
     
-    if (screenId === 'screen-my-museums') {
-        renderMyMuseums();
+    if (screenId === 'screen-liked-museums') {
+        renderLikedMuseums();
     }
 
     if (screenId === 'screen-payment') {
@@ -810,8 +810,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize exhibitions display
     renderExhibitions();
     
-    // Initialize My List UI
-    updateMyListUI();
+    // Initialize Liked Exhibitions UI
+    updateLikedExhibitionsUI();
     
     // Add click listeners to close menus when clicking outside
     document.addEventListener('click', function(event) {
@@ -893,10 +893,10 @@ function generateExhibitionCards(exhibitions) {
     return exhibitions.map(exhibition => `
         <div class="exhibition-card" onclick="selectExhibition(${exhibition.id})">
             <div class="card-image"></div>
-            <button class="heart-btn ${isInMyList(exhibition.id) ? 'active' : ''}" 
+            <button class="heart-btn ${isInLikedExhibitions(exhibition.id) ? 'active' : ''}" 
                     data-exhibition-id="${exhibition.id}" 
-                    onclick="event.stopPropagation(); toggleMyList(${exhibition.id});">
-                ${isInMyList(exhibition.id) ? '❤️' : '🤍'}
+                    onclick="event.stopPropagation(); toggleLikedExhibitions(${exhibition.id});">
+                ${isInLikedExhibitions(exhibition.id) ? '❤️' : '🤍'}
             </button>
             <h3>${exhibition.title}</h3>
             <p>${exhibition.museum}</p>
@@ -918,10 +918,10 @@ function generateSearchExhibitionItems(exhibitions) {
     return exhibitions.map(exhibition => `
         <div class="exhibition-item" onclick="selectExhibition(${exhibition.id})">
             <div class="card-image"></div>
-            <button class="heart-btn ${isInMyList(exhibition.id) ? 'active' : ''}" 
+            <button class="heart-btn ${isInLikedExhibitions(exhibition.id) ? 'active' : ''}" 
                     data-exhibition-id="${exhibition.id}" 
-                    onclick="event.stopPropagation(); toggleMyList(${exhibition.id});">
-                ${isInMyList(exhibition.id) ? '❤️' : '🤍'}
+                    onclick="event.stopPropagation(); toggleLikedExhibitions(${exhibition.id});">
+                ${isInLikedExhibitions(exhibition.id) ? '❤️' : '🤍'}
             </button>
             <div class="card-info">
                 <h3>${exhibition.title}</h3>
@@ -1136,43 +1136,43 @@ function clearAllFilters() {
     toggleMoreFilters();
 }
 
-// My List functionality
-function addToMyList(exhibitionId) {
-    if (!myList.includes(exhibitionId)) {
-        myList.push(exhibitionId);
-        localStorage.setItem('myList', JSON.stringify(myList));
-        updateMyListUI();
+// Liked Exhibitions functionality
+function addToLikedExhibitions(exhibitionId) {
+    if (!likedExhibitions.includes(exhibitionId)) {
+        likedExhibitions.push(exhibitionId);
+        localStorage.setItem('likedExhibitions', JSON.stringify(likedExhibitions));
+        updateLikedExhibitionsUI();
     }
 }
 
-function removeFromMyList(exhibitionId) {
-    const index = myList.indexOf(exhibitionId);
+function removeFromLikedExhibitions(exhibitionId) {
+    const index = likedExhibitions.indexOf(exhibitionId);
     if (index > -1) {
-        myList.splice(index, 1);
-        localStorage.setItem('myList', JSON.stringify(myList));
-        updateMyListUI();
+        likedExhibitions.splice(index, 1);
+        localStorage.setItem('likedExhibitions', JSON.stringify(likedExhibitions));
+        updateLikedExhibitionsUI();
     }
 }
 
-function toggleMyList(exhibitionId) {
-    if (myList.includes(exhibitionId)) {
-        removeFromMyList(exhibitionId);
+function toggleLikedExhibitions(exhibitionId) {
+    if (likedExhibitions.includes(exhibitionId)) {
+        removeFromLikedExhibitions(exhibitionId);
     } else {
-        addToMyList(exhibitionId);
+        addToLikedExhibitions(exhibitionId);
     }
 }
 
-function isInMyList(exhibitionId) {
-    return myList.includes(exhibitionId);
+function isInLikedExhibitions(exhibitionId) {
+    return likedExhibitions.includes(exhibitionId);
 }
 
-function renderMyList() {
+function renderLikedExhibitions() {
     const count = document.getElementById('my-list-count');
     const list = document.getElementById('my-list-exhibitions');
     
     if (!count || !list) return;
     
-    const myExhibitions = exhibitionsData.filter(ex => myList.includes(ex.id));
+    const myExhibitions = exhibitionsData.filter(ex => likedExhibitions.includes(ex.id));
     
     if (myExhibitions.length === 0) {
         count.textContent = '0 exhibitions in your list';
@@ -1188,12 +1188,12 @@ function renderMyList() {
     }
 }
 
-function updateMyListUI() {
+function updateLikedExhibitionsUI() {
     // Update heart icons throughout the app
     const heartButtons = document.querySelectorAll('.heart-btn');
     heartButtons.forEach(btn => {
         const exhibitionId = parseInt(btn.dataset.exhibitionId);
-        if (isInMyList(exhibitionId)) {
+        if (isInLikedExhibitions(exhibitionId)) {
             btn.classList.add('active');
             btn.innerHTML = '❤️';
         } else {
@@ -1205,17 +1205,17 @@ function updateMyListUI() {
     // Update detail page heart button
     updateDetailHeartButton();
     
-    // Update My List page if currently visible
-    if (currentScreen === 'screen-my-list') {
-        renderMyList();
+    // Update Liked Exhibitions page if currently visible
+    if (currentScreen === 'screen-liked-exhibitions') {
+        renderLikedExhibitions();
     }
 }
 
-function toggleMyListFromDetail() {
+function toggleLikedExhibitionsFromDetail() {
     // Get the current exhibition from bookingData
     const exhibition = exhibitionsData.find(ex => ex.title === bookingData.exhibition);
     if (exhibition) {
-        toggleMyList(exhibition.id);
+        toggleLikedExhibitions(exhibition.id);
     }
 }
 
@@ -1224,7 +1224,7 @@ function updateDetailHeartButton() {
     if (detailHeartBtn && bookingData.exhibition) {
         const exhibition = exhibitionsData.find(ex => ex.title === bookingData.exhibition);
         if (exhibition) {
-            if (isInMyList(exhibition.id)) {
+            if (isInLikedExhibitions(exhibition.id)) {
                 detailHeartBtn.classList.add('active');
                 detailHeartBtn.innerHTML = '❤️';
             } else {
@@ -1796,45 +1796,45 @@ function updateMuseumDetailPage() {
     });
     
     // Update heart button
-    updateMuseumHeartButton();
+    updateLikedMuseumHeartButton();
 }
 
-function toggleMyMuseum() {
+function toggleLikedMuseums() {
     if (!currentMuseumId) return;
     
-    if (myMuseums.includes(currentMuseumId)) {
-        removeFromMyMuseums(currentMuseumId);
+    if (likedMuseums.includes(currentMuseumId)) {
+        removeFromLikedMuseums(currentMuseumId);
     } else {
-        addToMyMuseums(currentMuseumId);
+        addToLikedMuseums(currentMuseumId);
     }
 }
 
-function addToMyMuseums(museumId) {
-    if (!myMuseums.includes(museumId)) {
-        myMuseums.push(museumId);
-        localStorage.setItem('myMuseums', JSON.stringify(myMuseums));
-        updateMuseumHeartButton();
+function addToLikedMuseums(museumId) {
+    if (!likedMuseums.includes(museumId)) {
+        likedMuseums.push(museumId);
+        localStorage.setItem('likedMuseums', JSON.stringify(likedMuseums));
+        updateLikedMuseumHeartButton();
     }
 }
 
-function removeFromMyMuseums(museumId) {
-    const index = myMuseums.indexOf(museumId);
+function removeFromLikedMuseums(museumId) {
+    const index = likedMuseums.indexOf(museumId);
     if (index > -1) {
-        myMuseums.splice(index, 1);
-        localStorage.setItem('myMuseums', JSON.stringify(myMuseums));
-        updateMuseumHeartButton();
+        likedMuseums.splice(index, 1);
+        localStorage.setItem('likedMuseums', JSON.stringify(likedMuseums));
+        updateLikedMuseumHeartButton();
         
-        // Update My Museums page if currently visible
-        if (currentScreen === 'screen-my-museums') {
-            renderMyMuseums();
+        // Update Liked Museums page if currently visible
+        if (currentScreen === 'screen-liked-museums') {
+            renderLikedMuseums();
         }
     }
 }
 
-function updateMuseumHeartButton() {
+function updateLikedMuseumHeartButton() {
     const heartBtn = document.getElementById('museum-heart-btn');
     if (heartBtn && currentMuseumId) {
-        if (myMuseums.includes(currentMuseumId)) {
+        if (likedMuseums.includes(currentMuseumId)) {
             heartBtn.classList.add('active');
             heartBtn.textContent = '❤️';
         } else {
@@ -1844,13 +1844,13 @@ function updateMuseumHeartButton() {
     }
 }
 
-function renderMyMuseums() {
+function renderLikedMuseums() {
     const count = document.getElementById('my-museums-count');
     const list = document.getElementById('my-museums-list');
     
     if (!count || !list) return;
     
-    const favoriteMuseums = museumsData.filter(m => myMuseums.includes(m.id));
+    const favoriteMuseums = museumsData.filter(m => likedMuseums.includes(m.id));
     
     if (favoriteMuseums.length === 0) {
         count.textContent = '0 museums in your list';
@@ -1869,7 +1869,7 @@ function renderMyMuseums() {
                     <p>${museum.address}</p>
                 </div>
                 <button class="heart-btn active" 
-                        onclick="event.stopPropagation(); currentMuseumId = ${museum.id}; toggleMyMuseum();">
+                        onclick="event.stopPropagation(); currentMuseumId = ${museum.id}; toggleLikedMuseums();">
                     ❤️
                 </button>
             </div>
