@@ -1780,7 +1780,7 @@ input[type="checkbox"]:checked + .toggle::after {
     }
     
     .exhibition-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
     
     .popular-section .exhibition-card {
