@@ -2057,6 +2057,60 @@
             </footer>
         </div>
 
+        <!-- Screen: Tag Exhibitions -->
+        <div class="screen" id="screen-tag-exhibitions">
+            <header class="app-header">
+                <div class="back-arrow" onclick="goBack()">←</div>
+                <div class="profile-section" onclick="toggleProfileMenu(event)">
+                    <div class="profile-icon">
+                        <span class="profile-initial">Y</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <span>YK</span>
+                            </div>
+                            <div class="profile-details">
+                                <p class="profile-name">Yuri Kato</p>
+                                <p class="profile-email">yuri@example.com</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" onclick="showScreen('screen-my-list'); return false;">Liked Exhibitions</a>
+                            <a href="#" onclick="showScreen('screen-my-museums'); return false;">Liked Museums</a>
+                            <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                            <a href="#" onclick="showScreen('screen-settings'); return false;">Settings</a>
+                            <a href="#" onclick="showScreen('screen-help'); return false;">Help & FAQ</a>
+                            <a href="#" onclick="logout(); return false;">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="app-title" onclick="goHome()">Visit Museums</h1>
+                <div class="menu-section">
+                    <div class="menu-icon" onclick="toggleMainMenu(event)">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="main-menu">
+                        <a href="#" onclick="showScreen('screen-home'); return false;">Top</a>
+                        <a href="#" onclick="showScreen('screen-all-exhibitions'); return false;">All Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-popular-exhibitions'); return false;">Popular Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-list'); return false;">Liked Exhibitions</a>
+                        <a href="#" onclick="showScreen('screen-my-museums'); return false;">Liked Museums</a>
+                        <a href="#" onclick="showScreen('screen-my-tickets'); return false;">My Tickets</a>
+                        <a href="#" onclick="showScreen('screen-about'); return false;">About Visit Museums</a>
+                    </div>
+                </div>
+            </header>
+            <div class="content">
+                <h2 id="tag-exhibitions-title">Tagged Exhibitions</h2>
+                <div class="exhibition-list" id="tag-exhibitions-list">
+                    <!-- Tagged exhibitions will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
         <!-- Screen: Museum Detail -->
         <div class="screen" id="screen-museum-detail">
             <header class="app-header">

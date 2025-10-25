@@ -908,7 +908,7 @@ function generateExhibitionCards(exhibitions) {
                     if (tag === 'Now Showing') className += ' tag-now-showing';
                     else if (tag === 'Coming Soon') className += ' tag-coming-soon';
                     else if (tag === 'Ending Soon') className += ' tag-ending-soon';
-                    return `<span class="${className}">${tag}</span>`;
+                    return `<span class="${className}" onclick="event.stopPropagation(); showExhibitionsByTag('${tag}')">${tag}</span>`;
                 }).join('')}
             </div>
         </div>
@@ -935,7 +935,7 @@ function generateSearchExhibitionItems(exhibitions) {
                         if (tag === 'Now Showing') className += ' tag-now-showing';
                         else if (tag === 'Coming Soon') className += ' tag-coming-soon';
                         else if (tag === 'Ending Soon') className += ' tag-ending-soon';
-                        return `<span class="${className}">${tag}</span>`;
+                        return `<span class="${className}" onclick="event.stopPropagation(); showExhibitionsByTag('${tag}')">${tag}</span>`;
                     }).join('')}
                 </div>
             </div>
@@ -948,8 +948,41 @@ function selectExhibition(id) {
     if (exhibition) {
         bookingData.exhibition = exhibition.title;
         bookingData.museum = exhibition.museum;
+        const detailTitle = document.querySelector('#screen-detail h2');
+        const detailMuseum = document.querySelector('#screen-detail .museum-link');
+        const detailPeriod = document.querySelector('#screen-detail .detail-info p:last-of-type');
+        const detailTags = document.querySelector('#screen-detail .tabs');
+
+        if (detailTitle) detailTitle.textContent = exhibition.title;
+        if (detailMuseum) detailMuseum.textContent = exhibition.museum;
+        if (detailPeriod) detailPeriod.textContent = exhibition.period;
+
+        if (detailTags) {
+            detailTags.innerHTML = exhibition.tags.map(tag => {
+                let className = 'tab';
+                if (tag === 'Now Showing') className += ' active';
+                return `<button class="${className}" onclick="showExhibitionsByTag('${tag}')">${tag}</button>`;
+            }).join('');
+        }
+
         showScreen('screen-detail');
     }
+}
+
+function showExhibitionsByTag(tag) {
+    const title = document.querySelector('#screen-tag-exhibitions h2');
+    const list = document.getElementById('tag-exhibitions-list');
+
+    if (title) {
+        title.textContent = `#${tag}`;
+    }
+
+    if (list) {
+        const taggedExhibitions = exhibitionsData.filter(exhibition => exhibition.tags.includes(tag));
+        list.innerHTML = generateSearchExhibitionItems(taggedExhibitions);
+    }
+
+    showScreen('screen-tag-exhibitions');
 }
 
 function toggleTag(tag) {
