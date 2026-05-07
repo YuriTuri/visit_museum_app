@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  background: #e5e5e5;
+  color: #112a4a;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.phone-shell {
+  width: 100%;
+  max-width: 414px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #fdf8f3;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+  overflow-x: hidden;
+}
