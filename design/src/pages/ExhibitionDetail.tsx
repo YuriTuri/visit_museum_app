@@ -3,6 +3,19 @@ import Layout, { PrimaryButton } from "../components/Layout";
 import { findExhibition } from "../data/exhibitions";
 import { useBooking } from "../context/BookingContext";
 
+const TAG_TO_SUBJECT: Record<string, string> = {
+  History: "history", Ukiyoe: "history", Edo: "history",
+  Photo: "photography", Photography: "photography",
+  Technology: "technology",
+  Art: "art", Contemporary: "art", Creative: "art", FineArt: "art",
+  Impressionist: "art", Classic: "art", Craft: "art", Ceramics: "art",
+  Modern: "art", Illustration: "art", PictureBook: "art",
+  Science: "science", Space: "science", Dinosaur: "science",
+  Nature: "science", Insects: "science", Education: "science",
+  Culture: "culture", Urban: "culture", Architecture: "culture",
+  Anime: "anime & manga", Manga: "anime & manga",
+};
+
 export default function ExhibitionDetail() {
   const { id } = useParams();
   const exhibition = findExhibition(id);
@@ -46,14 +59,27 @@ export default function ExhibitionDetail() {
 
         <div className="px-4 pt-2">
           <div className="flex flex-wrap gap-1.5 mb-3">
-            {exhibition.tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-white rounded-[10px] px-1.5 text-[14px] font-bold text-accent/80"
-              >
-                {tag}
-              </span>
-            ))}
+            {exhibition.tags.map((tag) => {
+              const subject = TAG_TO_SUBJECT[tag];
+              const isFamily = tag === "Family";
+              return (
+                <button
+                  key={tag}
+                  onClick={() =>
+                    navigate("/", {
+                      state: isFamily
+                        ? { ageFilter: "Family-friendly" }
+                        : subject
+                        ? { subjectFilter: subject }
+                        : {},
+                    })
+                  }
+                  className="bg-white rounded-[10px] px-1.5 text-[14px] font-bold text-accent/80 hover:bg-accent/10 transition-colors"
+                >
+                  {tag}
+                </button>
+              );
+            })}
           </div>
           <h1 className="text-navy text-[20px] font-bold leading-tight mb-2">
             {exhibition.title}
