@@ -7,6 +7,21 @@ import { findExhibition } from "../data/exhibitions";
 
 const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
+type Congestion = "low" | "moderate" | "busy";
+
+function getCongestion(iso: string): Congestion {
+  let h = 0;
+  for (let i = 0; i < iso.length; i++) h = (h * 31 + iso.charCodeAt(i)) | 0;
+  const v = Math.abs(h) % 10;
+  return v < 4 ? "low" : v < 7 ? "moderate" : "busy";
+}
+
+const DOT_COLOR: Record<Congestion, string> = {
+  low: "bg-green-500",
+  moderate: "bg-amber-400",
+  busy: "bg-red-500",
+};
+
 function buildMonth(year: number, month: number) {
   const first = new Date(year, month, 1);
   const startWeekday = first.getDay();
@@ -138,27 +153,41 @@ export default function SelectDate() {
             </div>
             <div className="grid grid-cols-7">
               {cells.map((d, i) => {
-                if (d === null) return <div key={i} className="h-10" />;
+                if (d === null) return <div key={i} className="h-[52px]" />;
                 const iso = isoFor(d);
                 const isSelected = selected === iso;
                 const isToday = iso === todayIso;
                 return (
-                  <button
-                    key={i}
-                    onClick={() => setSelected(iso)}
-                    className={`h-10 m-auto w-10 flex items-center justify-center text-[14px] font-bold rounded-full transition ${
-                      isSelected
-                        ? "bg-primary text-white"
-                        : isToday
-                          ? "border border-primary text-navy"
-                          : "text-navy hover:bg-navy/5"
-                    }`}
-                  >
-                    {d}
-                  </button>
+                  <div key={i} className="flex flex-col items-center gap-0.5 pb-1">
+                    <button
+                      onClick={() => setSelected(iso)}
+                      className={`h-10 w-10 flex items-center justify-center text-[14px] font-bold rounded-full transition ${
+                        isSelected
+                          ? "bg-primary text-white"
+                          : isToday
+                            ? "border border-primary text-navy"
+                            : "text-navy hover:bg-navy/5"
+                      }`}
+                    >
+                      {d}
+                    </button>
+                    <span className={`w-1.5 h-1.5 rounded-full ${DOT_COLOR[getCongestion(iso)]}`} />
+                  </div>
                 );
               })}
             </div>
+          </div>
+
+          <div className="flex items-center gap-4 px-4 pb-3 text-[11px] font-bold text-navy/60">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-green-500" /> Not busy
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-400" /> Moderate
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-red-500" /> Busy
+            </span>
           </div>
 
           <div className="flex items-center justify-between px-3 py-2 border-t border-transparent">

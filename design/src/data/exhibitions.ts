@@ -248,7 +248,7 @@ export const exhibitions: Exhibition[] = [
     title: "Wonders of the Insect World: Evolution of Beauty",
     museum: "National Museum of Nature and Science",
     dates: "July 13 - Oct 1",
-    image: SEED_IMG("photo-1561622539-fb88d3bd5c0a"),
+    image: SEED_IMG("photo-1560263816-d704d83cce0f"),
     tags: ["Nature", "Insects", "Education"],
     area: "Ueno",
     schedule: "Now Showing",

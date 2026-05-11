@@ -16,6 +16,25 @@ const TIMES = [
   "17:00",
 ];
 
+type Congestion = "low" | "moderate" | "busy";
+
+const TIME_CONGESTION: Record<string, Congestion> = {
+  "10:00": "low",
+  "11:00": "moderate",
+  "12:00": "busy",
+  "13:00": "busy",
+  "14:00": "moderate",
+  "15:00": "moderate",
+  "16:00": "low",
+  "17:00": "low",
+};
+
+const CONGESTION_STYLE: Record<Congestion, { dot: string; label: string; text: string }> = {
+  low:      { dot: "bg-green-500", label: "Not busy",  text: "text-green-600" },
+  moderate: { dot: "bg-amber-400", label: "Moderate",  text: "text-amber-500" },
+  busy:     { dot: "bg-red-500",   label: "Busy",      text: "text-red-500"   },
+};
+
 export default function SelectTime() {
   const { draft, setDraft } = useBooking();
   const navigate = useNavigate();
@@ -53,17 +72,24 @@ export default function SelectTime() {
         <div className="space-y-2 mb-5">
           {TIMES.map((t) => {
             const selected = time === t;
+            const { dot, label, text } = CONGESTION_STYLE[TIME_CONGESTION[t]];
             return (
               <button
                 key={t}
                 onClick={() => setTime(t)}
-                className={`w-full text-left px-5 py-4 rounded-2xl text-[16px] font-bold transition ${
+                className={`w-full px-5 py-4 rounded-2xl text-[16px] font-bold transition flex items-center justify-between ${
                   selected
                     ? "bg-primary text-white"
                     : "bg-white/80 text-navy hover:bg-white"
                 }`}
               >
-                {t}
+                <span>{t}</span>
+                <span className="flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
+                  <span className={`text-[12px] font-bold ${selected ? "text-white/80" : text}`}>
+                    {label}
+                  </span>
+                </span>
               </button>
             );
           })}
